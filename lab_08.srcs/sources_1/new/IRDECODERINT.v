@@ -302,10 +302,10 @@ begin
                                             pcopsel=2'h0; 
                                             wr_en=1'h0;
                                         end  
-                                8'h06:  begin               // OUTR <- ALUOUT 
-                                            seldst=4'h5;    
-                                            selsrc=4'h5; 
-                                            aluopsel=4'h0; 
+                                8'h06:  begin               // MAR <- MBR
+                                            seldst=4'h6;    // To MAR
+                                            selsrc=4'h6;    // From MBR
+                                            aluopsel=4'h0;  
                                             pcopsel=2'h0;   
                                             wr_en=1'h0;
                                         end 
@@ -404,16 +404,17 @@ begin
 
                             state=state+8'h01;
                         end     
-                4'h4:   
-                        if(IR==8'h06) 
-                        begin
-                            pcopsel=2'h0;      
-                            state=state+8'h01;
-                        end
-                        else
-                        begin
-                            pcopsel=2'h1;
-                            state=state+8'h01;
+                4'h4:   begin 
+                            if(IR==8'h06) 
+                            begin
+                                pcopsel=2'h0;      
+                                state=state+8'h01;
+                            end
+                            else
+                            begin
+                                pcopsel=2'h1;
+                                state=state+8'h01;
+                            end
                         end
                 4'h5:   begin 
                             if(IR==8'h06) 
@@ -426,16 +427,17 @@ begin
                                 state=8'h0;
                             end
                         end
-                4'h6:   
-                        if(IR==8'h06) 
-                        begin
-                            pcopsel=2'h0; 
-                            state=state+1;
-                        end
-                        else  
-                        begin
-                            pcopsel=2'h1; 
-                            state=4'h0;
+                4'h6:   begin 
+                            if(IR==8'h06) 
+                            begin
+                                pcopsel=2'h0; 
+                                state=state+1;
+                            end
+                            else  
+                            begin
+                                pcopsel=2'h1; 
+                                state=4'h0;
+                            end
                         end
                 4'h7:   begin 
                             pcopsel=2'h2; 
@@ -446,7 +448,7 @@ begin
                             state=8'h9;
                         end
                 4'h9:   begin 
-                            //   IR=OPCODE;
+                            // IR=OPCODE;
                             pcopsel=2'h0; 
                             state=8'h0;
                         end
@@ -458,6 +460,7 @@ begin
                             pcopsel=2'h0;
                         end
             endcase
+            
         end
     end
 end
