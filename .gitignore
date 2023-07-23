@@ -1,0 +1,9 @@
+# Ignore everything in the root directory
+/*
+
+# Except for
+!/lab_08.srcs/
+
+# Ignore these files
+*.wcfg
+*.xpr
