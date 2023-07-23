@@ -26,185 +26,231 @@ reg prima;
 
 initial
 begin
-prima=1'b0;
-state=4'h0;
-IR=8'h0;
-dstoe=1'b1;
-srcoe=1'b1;
-seldst=4'h0; 
-selsrc=4'h0; 
-aluopsel=4'h0;      
-pcopsel=2'h0;
-IRREF=1'b0;  // Stack Refresh
-SELJUMP=1'b0; //MAR Selected
-IRJUMP=8'd33; // Jump vector For Interrupt
-statex=1'b0;
+    prima=1'b0;
+    state=4'h0;
+    IR=8'h0;
+    dstoe=1'b1;
+    srcoe=1'b1;
+    seldst=4'h0; 
+    selsrc=4'h0; 
+    aluopsel=4'h0;      
+    pcopsel=2'h0;
+    IRREF=1'b0;     // Stack Refresh
+    SELJUMP=1'b0;   // MAR Selected
+    IRJUMP=8'd33;   // Jump vector For Interrupt
+    statex=1'b0;    
 end
 
     
 always@(posedge clk)
 begin
     if(!rst) begin
-             state=4'h0;
-             prima=1'b0;
-             IR=8'h0;
-             dstoe=1'b1;
-             srcoe=1'b1;
-             seldst=4'h0; 
-             selsrc=4'h0; 
-             aluopsel=4'h0; 
-             pcopsel=2'h0;
-             statex=1'b0;
-             IRREF=1'b0;  // Stack Refresh
-             SELJUMP=1'b0; //MAR Selected
-             IRJUMP=8'd33; // Jump vector For Interrupt
-             wr_en=1'b0;
-             end 
-    if(rst) begin
-                 if(INT==1'b1 & state!=4'h0) begin
-                         prima=1'b1;
-                         end
-                 if(prima==1'b1 & state==4'h0)
-                    begin
-                    prima=1'b0; // reset prima value
-                    statex=1'b1; // primes interrupt routine to start
-                    end
-                 if(statex)
-                 begin
-                 case(state)
-                 3'h0: begin
-                       IRJUMP=8'd33; // Jump vector For Interrupt
-                       IRREF=1'b1;  // Stack Obtain data
-                       SELJUMP=1'b1; //IRJMP Selected
-                       state=state+1;
-                       end
-                 3'h1: begin
-                       IRREF=1'b0;  // Stack Refresh
-                       SELJUMP=1'b1; //IRJUMP Selected
-                       pcopsel=2'h2; // Load data from IRJMP to PC
-                       state=state+1;
-                       end
-                 3'h2: begin
-                       SELJUMP=1'b0; //IRJUMP Selected
-                       pcopsel=2'h0; // PC Refresh
-                       state=4'h0;  // Reset State
-                       statex=1'b0; // Ends ISR Vector
-                       end                       
-                endcase
-                end
-                if(!statex)
-                begin
-                    dstoe=1'b1;
-                    srcoe=1'b1;
-                    case(state)
-                    4'h0: begin
-                          IR=OPCODE; // FETCH
-                          state=state+1;
-                          end
-                    4'h1: begin
-                          case(IR)   //DECODE PH1
-                          8'h00: begin
-                                 seldst=4'h1; 
-                                 selsrc=4'h1; 
-                                 aluopsel=4'h0; 
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; //NOP
-                                 end
-                          8'h01: begin
-                                 seldst=4'h1; 
-                                 selsrc=4'h3; 
-                                 aluopsel=4'h0;   // Load Value
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; // PC
-                                 end 
-                          8'h02: begin
-                                 seldst=4'h2; 
-                                 selsrc=4'h3;  
-                                 aluopsel=4'h0; // LOAD Value
-                                 pcopsel=2'h0;
-                                 wr_en=1'h0; 
-                                 end 
-                          8'h03: begin
-                                 seldst=4'h5; 
-                                 selsrc=4'h1; 
-                                 aluopsel=4'h0; 
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; // OUTA
-                                 end  
-                          8'h04: begin
-                                 seldst=4'h5; 
-                                 selsrc=4'h2; 
-                                 aluopsel=4'h0; 
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; //OUTB
-                                 end 
-                          8'h06: begin
-                                 seldst=4'h1; 
-                                 selsrc=4'h1; 
-                                 aluopsel=4'h0; 
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; // NOP
-                                 end
-                          8'h07: begin
-                                 seldst=4'h1; 
-                                 selsrc=4'h5; 
-                                 aluopsel=4'h1; 
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; // ADDAB
-                                 end
-                           8'h08: begin
-                                 seldst=4'h1; 
-                                 selsrc=4'h5; 
-                                 aluopsel=4'h2; 
-                                 pcopsel=2'h0; 
-                                 wr_en=1'h0; // SUBAB
-                                 end
-                            8'h09: begin //ANDAB
-                                 seldst=4'h1; 
-                                 selsrc=4'h5; 
-                                 aluopsel=4'h4; 
-                                 pcopsel=2'h0;
-                                 wr_en=1'h0;  
-                                 end 
-                          8'h0a: // ORLAB
-                          begin
-                                seldst=4'h1; 
-                                 selsrc=4'h5; 
-                                 aluopsel=4'h5; 
-                                 pcopsel=2'h0;
-                                 wr_en=1'h0;  
-                                 end
-                          8'h0b: // NOTA
-                          begin
-                                seldst=4'h1; 
-                                 selsrc=4'h5; 
-                                 aluopsel=4'h3; 
-                                 pcopsel=2'h0;
-                                 wr_en=1'h0;  
-                                 end
-                          8'h0c: // XORAB
-                            begin
-                                 seldst=4'h1; 
-                                 selsrc=4'h5; 
-                                 aluopsel=4'h6; 
-                                 pcopsel=2'h0;
-                                 wr_en=1'h0;  
-                                 end
-                          8'h0d: begin  // RAM Write
-                                 seldst=4'h7;   // Sends to datapath's MemOut then to RAM's data_in
-                                 selsrc=4'h4;   // Value is from testbench (PortIN)
-                                 aluopsel=4'h0;
-                                 pcopsel=2'h0;
-                                 wr_en=1'h1; 
-                                 end
-                          8'h0e: begin  // RAM Read
-                                 seldst=4'h1;   // TODO 3: Modify this; RAM read's destination register
-                                 selsrc=4'h6;   // Obtains value from MBR connected to RAM'S data_out
-                                 aluopsel=4'h0;
-                                 pcopsel=2'h0;
-                                 wr_en=1'h0;
-                                 end
-                          endcase
+        state=4'h0;
+        prima=1'b0;
+        IR=8'h0;
+        dstoe=1'b1;
+        srcoe=1'b1;
+        seldst=4'h0; 
+        selsrc=4'h0; 
+        aluopsel=4'h0; 
+        pcopsel=2'h0;
+        statex=1'b0;
+        IRREF=1'b0;     // Stack Refresh
+        SELJUMP=1'b0;   // MAR Selected
+        IRJUMP=8'd33;   // Jump vector For Interrupt
+        wr_en=1'b0;
+    end 
+    
+    if(rst) 
+    begin
+        // Interrupt routine
+        if(INT==1'b1 & state!=4'h0) 
+        begin
+            prima=1'b1;
+        end
+        if(prima==1'b1 & state==4'h0)
+        begin
+            prima=1'b0;     // reset prima value
+            statex=1'b1;    // primes interrupt routine to start
+        end
+        if(statex)
+        begin
+            case(state)
+                3'h0:   begin
+                            IRJUMP=8'd33;   // Jump vector For Interrupt
+                            IRREF=1'b1;     // Stack Obtain data
+                            SELJUMP=1'b1;   //IRJMP Selected
+                            state=state+1;
+                        end
+                3'h1:   begin
+                            IRREF=1'b0;     // Stack Refresh
+                            SELJUMP=1'b1;   //IRJUMP Selected
+                            pcopsel=2'h2;   // Load data from IRJMP to PC
+                            state=state+1;
+                        end
+                3'h2:   begin
+                            SELJUMP=1'b0;   // IRJUMP Selected
+                            pcopsel=2'h0;   // PC Refresh
+                            state=4'h0;     // Reset State
+                            statex=1'b0;    // Ends ISR Vector
+                        end                       
+            endcase
+        end
+
+        // Normal operation
+        if(!statex)
+        begin
+            dstoe=1'b1;
+            srcoe=1'b1;
+            
+            case(state)
+                4'h0:   begin
+                            IR=OPCODE;              // FETCH
+                            state=state+1;
+                        end
+                4'h1: begin
+                    case(IR)                        // DECODE PH1
+                        8'h00:  begin               // NOP
+                                    seldst=4'h1;    
+                                    selsrc=4'h1;    
+                                    aluopsel=4'h0; 
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end
+                        8'h01:  begin               // MOVAC
+                                    seldst=4'h1;    // To A
+                                    selsrc=4'h3;    // From C
+                                    aluopsel=4'h0;  
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end 
+                        8'h02:  begin               // MOVBC
+                                    seldst=4'h2;    // To B
+                                    selsrc=4'h3;    // From C
+                                    aluopsel=4'h0; 
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0; 
+                                end 
+                        8'h03:  begin               // OUTA
+                                    seldst=4'h5;    // To OUTR
+                                    selsrc=4'h1;    // From A
+                                    aluopsel=4'h0; 
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end  
+                        8'h04:  begin               // OUTB
+                                    seldst=4'h5;    // To OUTR
+                                    selsrc=4'h2;    // From B
+                                    aluopsel=4'h0; 
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end
+                        8'h05:  begin               // OUTC
+                                    seldst=4'h5;    // To OUTR
+                                    selsrc=4'h3;    // From C
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;
+                                end                                
+                        8'h06:  begin               // NOP
+                                    seldst=4'h1; 
+                                    selsrc=4'h1; 
+                                    aluopsel=4'h0; 
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end
+                        8'h07:  begin               // ADDAB
+                                    seldst=4'h1;    // To A 
+                                    selsrc=4'h5;    // From ALUOUT
+                                    aluopsel=4'h1;  // A + B
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end
+                        8'h08:  begin               // SUBAB
+                                    seldst=4'h1;    // To A
+                                    selsrc=4'h5;    // From ALUOUT
+                                    aluopsel=4'h2;  // A - B
+                                    pcopsel=2'h0; 
+                                    wr_en=1'h0; 
+                                end
+                        8'h09:  begin               // ANDAB
+                                    seldst=4'h1;    // To A 
+                                    selsrc=4'h5;    // From ALUOUT
+                                    aluopsel=4'h4;  // A & B
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;  
+                                end 
+                        8'h0a:  begin               // ORLAB
+                                    seldst=4'h1;    // To A
+                                    selsrc=4'h5;    // From ALUOUT
+                                    aluopsel=4'h5;  // A | B
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;  
+                                end
+                        8'h0b:  begin               // NOTA
+                                    seldst=4'h1;    // To A
+                                    selsrc=4'h5;    // From ALUOUT
+                                    aluopsel=4'h3;  // ~A
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;  
+                                end
+                        8'h0c:  begin               // XORAB
+                                    seldst=4'h1;    // To A
+                                    selsrc=4'h5;    // From ALUOUT
+                                    aluopsel=4'h6;  // A ^ B
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;  
+                                end
+                        8'h0d:  begin  // SW.IN
+                                    seldst=4'h7;    // To MemOut (RAM data_in)
+                                    selsrc=4'h4;    // From PortIN
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h1;     // Write enabled
+                        end
+                        8'h0e:  begin               // SW.A
+                                    seldst=4'h7;    // To MemOut (RAM data_in)
+                                    selsrc=4'h1;    // From A
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h1;     // Write enabled
+                                end
+                        8'h0f:  begin               // SW.B
+                                    seldst=4'h7;    // To MemOut (RAM data_in)
+                                    selsrc=4'h2;    // From B
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h1;     // Write enabled
+                                end
+                        8'h10:  begin               // SW.C
+                                    seldst=4'h7;    // To MemOut (RAM data_in)
+                                    selsrc=4'h3;    // From C
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h1;     // Write enabled
+                                end
+                        8'h11:  begin               // LW.A
+                                    seldst=4'h1;    // To A
+                                    selsrc=4'h6;    // From MBRA (RAM data_out)
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;     // Write disabled
+                                end
+                        8'h12:  begin               // LW.B
+                                    seldst=4'h2;    // To B
+                                    selsrc=4'h6;    // From MBRA (RAM data_out)
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;     // Write disabled
+                                end
+                        8'h13:  begin               // LW.C
+                                    seldst=4'h3;    // To C
+                                    selsrc=4'h6;    // From MBRA (RAM data_out)
+                                    aluopsel=4'h0;
+                                    pcopsel=2'h0;
+                                    wr_en=1'h0;     // Write disabled
+                                end
+endcase
                             state=state+8'h01;
                           end
                      4'h2: begin
