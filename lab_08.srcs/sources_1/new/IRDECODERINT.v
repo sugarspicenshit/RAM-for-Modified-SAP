@@ -68,12 +68,12 @@ begin
         begin
             prima=1'b1;
         end
-        if(prima==1'b1 & state==4'h0)
+        if(prima==1'b1 & state==4'h0) 
         begin
             prima=1'b0;     // reset prima value
             statex=1'b1;    // primes interrupt routine to start
         end
-        if(statex)
+        if(statex) 
         begin
             case(state)
                 3'h0:   begin
@@ -105,12 +105,12 @@ begin
             
             // SAP FSM
             case(state)
-                4'h0:   begin
-                            IR=OPCODE;                      // FETCH
+                4'h0:   begin                               // FETCH 
+                            IR=OPCODE;                      
                             state=state+1;
                         end
-                4'h1:   begin
-                            case(IR)                        // DECODE PH1
+                4'h1:   begin                               // DECODE PH1 
+                            case(IR)                        
                                 8'h00:  begin               // NOP 
                                             seldst=4'h1;    
                                             selsrc=4'h1;    
@@ -255,11 +255,11 @@ begin
                             
                             state=state+8'h01;
                         end
-                4'h2:   begin
+                4'h2:   begin 
                             state=state+8'h01;
                         end
-                4'h3:   begin
-                            case(IR)                        // EXECUTE PH2
+                4'h3:   begin                               // EXECUTE PH2 
+                            case(IR)                        
                                 8'h00:  begin               // NOP 
                                             seldst=4'h1; 
                                             selsrc=4'h1; 
@@ -404,7 +404,7 @@ begin
 
                             state=state+8'h01;
                         end     
-                4'h4: 
+                4'h4:   
                         if(IR==8'h06) 
                         begin
                             pcopsel=2'h0;      
@@ -415,7 +415,7 @@ begin
                             pcopsel=2'h1;
                             state=state+8'h01;
                         end
-                4'h5:   begin
+                4'h5:   begin 
                             if(IR==8'h06) 
                             begin 
                                 state=state+1;
@@ -426,7 +426,7 @@ begin
                                 state=8'h0;
                             end
                         end
-                4'h6:  
+                4'h6:   
                         if(IR==8'h06) 
                         begin
                             pcopsel=2'h0; 
@@ -450,7 +450,7 @@ begin
                             pcopsel=2'h0; 
                             state=8'h0;
                         end
-                default:    
+                default: 
                         begin
                             seldst=4'h1;
                             selsrc=4'h1; 
