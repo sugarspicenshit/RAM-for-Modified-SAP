@@ -251,12 +251,23 @@ begin
                                             pcopsel=2'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
+                                8'hff:  begin               // HLT
+                                            seldst=4'h0;
+                                            selsrc=4'h0;
+                                            aluopsel=4'h0;
+                                            pcopsel=2'h0;
+                                            wr_en=1'h0;
+                                        end
                             endcase
                             
-                            state=state+8'h01;
+                            // Proceed to default case if HLT instruction
+                            if (IR!=8'hff)                  
+                                state=state+4'h1;
+                            else
+                                state=4'hf;
                         end
                 4'h2:   begin 
-                            state=state+8'h01;
+                            state=state+4'h1;
                         end
                 4'h3:   begin                               // EXECUTE PH2 
                             case(IR)                        
@@ -357,7 +368,7 @@ begin
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
                                             wr_en=1'h0;     // Write disabled
-                                end
+                                        end
                                 8'h0e:  begin               // SW.A 
                                             seldst=4'h7;    // To MemOut (RAM data_in)
                                             selsrc=4'h1;    // From A
