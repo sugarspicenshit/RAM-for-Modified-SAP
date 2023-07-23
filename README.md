@@ -8,3 +8,6 @@ Copy and paste the folder to your local project. Go to Vivado then press `Alt + 
 
 All files in the `sources_1/new` folder are added as **Design Sources**.  
 All files in the `sim_1/new` folder are added as **Simulation Sources**.
+
+# Instruction Set
+Click [here](https://trusted-bassoon-79d.notion.site/Modified-SAP-Instructions-af7bd8d4e6dd416f95365e56079b029c?pvs=4) to open the instruction set used in this project. 
