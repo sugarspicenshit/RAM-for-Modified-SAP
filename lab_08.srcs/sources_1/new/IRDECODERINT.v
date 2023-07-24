@@ -18,28 +18,27 @@ module IRDECODER(
     input wire clk,
     input wire rst,
     output reg wr_en
-    );
+);
 
 reg statex;
 reg prima;
 
-
-initial
-begin
-    prima=1'b0;
-    state=4'h0;
-    IR=8'h0;
-    dstoe=1'b1;
-    srcoe=1'b1;
-    seldst=4'h0; 
-    selsrc=4'h0; 
-    aluopsel=4'h0;      
-    pcopsel=2'h0;
-    IRREF=1'b0;     // Stack Refresh
-    SELJUMP=1'b0;   // MAR Selected
-    IRJUMP=8'd33;   // Jump vector For Interrupt
-    statex=1'b0;    
-end
+//initial
+//begin
+//    prima=1'b0;
+//    state=4'h0;
+//    IR=8'h0;
+//    dstoe=1'b1;
+//    srcoe=1'b1;
+//    seldst=4'h0; 
+//    selsrc=4'h0; 
+//    aluopsel=4'h0;      
+//    pcopsel=2'h0;
+//    IRREF=1'b0;     // Stack Refresh
+//    SELJUMP=1'b0;   // MAR Selected
+//    IRJUMP=8'd33;   // Jump vector For Interrupt
+//    statex=1'b0;    
+//end
 
     
 always@(posedge clk)
@@ -64,52 +63,54 @@ begin
     if(rst) 
     begin
         // Interrupt routine
-        if(INT==1'b1 & state!=4'h0) 
-        begin
-            prima=1'b1;
+        begin 
+            if(INT==1'b1 & state!=4'h0) begin 
+                prima=1'b1;
+            end
+            if(prima==1'b1 & state==4'h0) begin 
+                prima=1'b0;     // reset prima value
+                statex=1'b1;    // primes interrupt routine to start
+            end
+            if(statex) begin 
+                case(state)
+                    3'h0:   begin
+                                IRJUMP=8'd33;   // Jump vector For Interrupt
+                                IRREF=1'b1;     // Stack Obtain data
+                                SELJUMP=1'b1;   //IRJMP Selected
+                                state=state+1;
+                            end
+                    3'h1:   begin
+                                IRREF=1'b0;     // Stack Refresh
+                                SELJUMP=1'b1;   //IRJUMP Selected
+                                pcopsel=2'h2;   // Load data from IRJMP to PC
+                                state=state+1;
+                            end
+                    3'h2:   begin
+                                SELJUMP=1'b0;   // IRJUMP Selected
+                                pcopsel=2'h0;   // PC Refresh
+                                state=4'h0;     // Reset State
+                                statex=1'b0;    // Ends ISR Vector
+                            end                       
+                endcase
+            end
         end
-        if(prima==1'b1 & state==4'h0) 
-        begin
-            prima=1'b0;     // reset prima value
-            statex=1'b1;    // primes interrupt routine to start
-        end
-        if(statex) 
-        begin
-            case(state)
-                3'h0:   begin
-                            IRJUMP=8'd33;   // Jump vector For Interrupt
-                            IRREF=1'b1;     // Stack Obtain data
-                            SELJUMP=1'b1;   //IRJMP Selected
-                            state=state+1;
-                        end
-                3'h1:   begin
-                            IRREF=1'b0;     // Stack Refresh
-                            SELJUMP=1'b1;   //IRJUMP Selected
-                            pcopsel=2'h2;   // Load data from IRJMP to PC
-                            state=state+1;
-                        end
-                3'h2:   begin
-                            SELJUMP=1'b0;   // IRJUMP Selected
-                            pcopsel=2'h0;   // PC Refresh
-                            state=4'h0;     // Reset State
-                            statex=1'b0;    // Ends ISR Vector
-                        end                       
-            endcase
-        end
-
+    
         // Normal operation
-        if(!statex)
-        begin
+        if(!statex) begin
             dstoe=1'b1;
             srcoe=1'b1;
             
             // SAP FSM
             case(state)
-                4'h0:   begin                               // FETCH 
+                4'h0:   begin
+                            // Buffer state to allow the OPCODE to reach from ROM
+                            state=state+1;
+                        end
+                4'h1:   begin                               // FETCH 
                             IR=OPCODE;                      
                             state=state+1;
                         end
-                4'h1:   begin                               // DECODE PH1 
+                4'h2:   begin                               // DECODE PH1 
                             case(IR)                        
                                 8'h00:  begin               // NOP 
                                             seldst=4'h1;    
@@ -260,16 +261,16 @@ begin
                                         end
                             endcase
                             
-                            // Proceed to default case if HLT instruction
+                            // Proceed to default case if instruction is HLT
                             if (IR!=8'hff)                  
                                 state=state+4'h1;
                             else
                                 state=4'hf;
                         end
-                4'h2:   begin 
+                4'h3:   begin 
                             state=state+4'h1;
                         end
-                4'h3:   begin                               // EXECUTE PH2 
+                4'h4:   begin                               // EXECUTE PH2 
                             case(IR)                        
                                 8'h00:  begin               // NOP 
                                             seldst=4'h1; 
@@ -374,39 +375,39 @@ begin
                                             selsrc=4'h1;    // From A
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
-                                            wr_en=1'h1;     // Write disabled
+                                            wr_en=1'h0;     // Write disabled
                                         end
                                 8'h0f:  begin               // SW.B 
                                             seldst=4'h7;    // To MemOut (RAM data_in)
                                             selsrc=4'h2;    // From B
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
-                                            wr_en=1'h1;     // Write disabled
+                                            wr_en=1'h0;     // Write disabled
                                         end
                                 8'h10:  begin               // SW.C 
                                             seldst=4'h7;    // To MemOut (RAM data_in)
                                             selsrc=4'h3;    // From C
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
-                                            wr_en=1'h1;     // Write enabled
+                                            wr_en=1'h0;     // Write disabled
                                         end
                                 8'h11:  begin               // LW.A 
                                             seldst=4'h1;    // To A
-                                            selsrc=4'h6;    // From MBRA (RAM data_out)
+                                            selsrc=4'h1;    // From A (loop the data around A)
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h12:  begin               // LW.B 
                                             seldst=4'h2;    // To B
-                                            selsrc=4'h6;    // From MBRA (RAM data_out)
+                                            selsrc=4'h2;    // From B (loop the data around B)
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h13:  begin               // LW.C 
                                             seldst=4'h3;    // To C
-                                            selsrc=4'h6;    // From MBRA (RAM data_out)
+                                            selsrc=4'h3;    // From C (loop the data around C)
                                             aluopsel=4'h0;
                                             pcopsel=2'h0;
                                             wr_en=1'h0;     // Write disabled
@@ -415,7 +416,7 @@ begin
 
                             state=state+8'h01;
                         end     
-                4'h4:   begin 
+                4'h5:   begin 
                             if(IR==8'h06) 
                             begin
                                 pcopsel=2'h0;      
@@ -423,11 +424,12 @@ begin
                             end
                             else
                             begin
+                                // Increment PC and move to next state
                                 pcopsel=2'h1;
                                 state=state+8'h01;
                             end
                         end
-                4'h5:   begin 
+                4'h6:   begin 
                             if(IR==8'h06) 
                             begin 
                                 state=state+1;
@@ -435,10 +437,12 @@ begin
                             else
                             begin                         
                                 pcopsel=2'h0;
-                                state=8'h0;
+                                
+                                // Proceed to fetch cycle
+                                state=8'h00;
                             end
                         end
-                4'h6:   begin 
+                4'h7:   begin 
                             if(IR==8'h06) 
                             begin
                                 pcopsel=2'h0; 
@@ -450,15 +454,15 @@ begin
                                 state=4'h0;
                             end
                         end
-                4'h7:   begin 
-                            pcopsel=2'h2; 
-                            state=4'h8;
-                        end
                 4'h8:   begin 
-                            pcopsel=2'h0; 
-                            state=8'h9;
+                            pcopsel=2'h2; 
+                            state=4'h9;
                         end
                 4'h9:   begin 
+                            pcopsel=2'h0; 
+                            state=8'ha;
+                        end
+                4'ha:   begin 
                             // IR=OPCODE;
                             pcopsel=2'h0; 
                             state=8'h0;
@@ -469,6 +473,7 @@ begin
                             selsrc=4'h1; 
                             aluopsel=4'h0; 
                             pcopsel=2'h0;
+                            wr_en=0;
                         end
             endcase
             

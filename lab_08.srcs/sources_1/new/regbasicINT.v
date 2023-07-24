@@ -1,3 +1,6 @@
+`timescale 1ns / 1ps
+
+
 module regbasic (
     output reg [7:0] Q,
     input wire [7:0] D,

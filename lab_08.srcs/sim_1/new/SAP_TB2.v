@@ -11,6 +11,7 @@ reg INT, rst, clk;
 wire [7:0] OUTR, PC, PCA, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR;
 wire [3:0] state, aluopsel, seldst, selsrc;
 wire [1:0] pcopsel;
+wire dstoe, srcoe;
 
 // Instantiate UUT
 SAP UUT (
@@ -32,7 +33,9 @@ SAP UUT (
     .BEE(BEE),
     .CEE(CEE),
     .MemOut(MemOut),
-    .MAR(MAR)
+    .MAR(MAR),
+    .dstoe(dstoe),
+    .srcoe(srcoe)
 );
 
 // Clock generation
@@ -42,11 +45,12 @@ always #1
 // Testing process
 initial
 begin
-    rst=1'b0; 
-    clk=1'b1; 
-    INR=8'h56; 
-    INT=1'b0;
-    #4 rst=1'b1;
+    // Initialize the values
+    rst = 1'h0;     // Reset the computer
+    clk = 1'h1;     // High leading edge
+    INR = 8'h56;    // Set the input port value 
+    INT = 1'h0;     // Disable the interrupt flag
+    #4 rst = 1'h1;  // After reset
 end
 
 endmodule
