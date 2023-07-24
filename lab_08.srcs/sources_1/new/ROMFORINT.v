@@ -29,13 +29,13 @@ module ROMBasic(
     
 always@(posedge clk)
 begin
-if(!rst) DATA=16'h0000;
+if(!rst)       DATA=16'h0000;
       
 if(rst)
       begin
       case(ADDR)
       8'd0:    DATA=16'h0D00;   // SW 
-      8'd1:    DATA=16'h0E00;   // LW.A 
+      8'd1:    DATA=16'h1100;   // LW.A 
       8'd2:    DATA=16'hFFFF;   // HLT
       8'd3:    DATA=16'h0000; 
       8'd4:    DATA=16'h0000; 

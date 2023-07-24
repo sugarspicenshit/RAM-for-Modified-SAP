@@ -42,7 +42,7 @@ datapath U3 (INR, OUTR, PC, ALUREsult, seldst, selsrc, IRJUMP, IRREF, SELJUMP, d
 // RAM (addr, data_in, data_out, wr_en, clk)
 // This is ok i think maybe idk
 // RAM U4 (MARQ, CEE, MBRA, wr_en, clk);
-RAM U4 (ROMDATA[7:0], MemOut, MBRA, wr_en, clk); 
+RAM U4 (ROMDATA[7:0], MemOut, MBRA, wr_en, clk, rst); 
     
 //RAM U12(ROMDATA, MemOut, CEE, wr_en, clk);
    

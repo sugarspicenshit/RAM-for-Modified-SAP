@@ -153,7 +153,7 @@ begin
                                             pcopsel=2'h0;
                                             wr_en=1'h0;
                                         end                                
-                                8'h06:  begin               // NOP 
+                                8'h06:  begin               // MAR <- MBR
                                             seldst=4'h1; 
                                             selsrc=4'h1; 
                                             aluopsel=4'h0; 
