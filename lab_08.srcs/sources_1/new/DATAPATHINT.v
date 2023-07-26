@@ -45,7 +45,7 @@ wire [7:0] STKQ;
 // Not connected: pcjmp
 demux U1 (AYEA, BEEA, CEEA, MemOut, PortOUT, pcjmp, MARA, seldst, clk, buswires, dsten);
 
-sourcemux U2 (AYEQ, BEEQ, CEEQ, INQ, ACCAGP, MBRQ, STKQ, selsrc, clk, buswires, srcen);
+sourcemux U2 (AYEQ, BEEQ, CEEQ, INQ, accagp, MBRQ, STKQ, selsrc, clk, buswires, srcen);
 
 regbasic U3 (INQ, PortIN, rst, clk);    // INR 
 regbasic U4 (AYEQ, AYEA, rst, clk);     // ACC
@@ -56,12 +56,10 @@ regbasic U9 (MBRQ, MBRA, rst, clk);     // MBR
  
 d4breg U10(PCOUT, clk, STKQ, IRREF);    // Stack
 
-ALU U6(AYEQ, BEEQ, CEEQ, op, ACCAGP, ALUREsult, clk);
+ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult, clk);
 
 PC U7(ACCAGP, clk, pcopsel, rst, PCOUT);
 
-// TODO: Check if ACCAGP is supposed to be connected there
-// This is fine for now as long as PC doesn't branch
 basicmux U11 (IRJUMP,MARQ,SELJUMP,clk,ACCAGP);
 //basicmux U6(AYEA,alutrib,alupsel,clk,accagp);
 

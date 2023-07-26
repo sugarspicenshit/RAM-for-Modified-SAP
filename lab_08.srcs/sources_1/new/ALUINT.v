@@ -11,7 +11,7 @@ module ALU(
     input clk
 );
     
-always@(posedge clk)
+always @(posedge clk)
 begin
     case(OP)
         4'h0:  ALUOUT=ALUOUT; 

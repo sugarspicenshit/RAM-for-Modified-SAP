@@ -64,6 +64,8 @@ begin
     begin
         // Interrupt routine
         begin 
+            // Prime the interrupt routine, but let the current cycle (fetch,
+            // decode, execute) finish before servicing the interrupt.
             if(INT==1'b1 & state!=4'h0) begin 
                 prima=1'b1;
             end
@@ -71,17 +73,20 @@ begin
                 prima=1'b0;     // reset prima value
                 statex=1'b1;    // primes interrupt routine to start
             end
+            
+            // Program counter jumps to the interrupt vector then resumes normal
+            // operation throughout the interrupt vector until the return instruction.
             if(statex) begin 
                 case(state)
                     3'h0:   begin
                                 IRJUMP=8'd33;   // Jump vector For Interrupt
                                 IRREF=1'b1;     // Stack Obtain data
-                                SELJUMP=1'b1;   //IRJMP Selected
+                                SELJUMP=1'b1;   // IRJMP Selected
                                 state=state+1;
                             end
                     3'h1:   begin
                                 IRREF=1'b0;     // Stack Refresh
-                                SELJUMP=1'b1;   //IRJUMP Selected
+                                SELJUMP=1'b1;   // IRJUMP Selected
                                 pcopsel=2'h2;   // Load data from IRJMP to PC
                                 state=state+1;
                             end
@@ -95,7 +100,7 @@ begin
             end
         end
     
-        // Normal operation
+        // Begin fetch, decode, execute cycle
         if(!statex) begin
             dstoe=1'b1;
             srcoe=1'b1;
