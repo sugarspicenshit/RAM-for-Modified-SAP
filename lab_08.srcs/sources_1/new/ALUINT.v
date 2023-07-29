@@ -7,11 +7,10 @@ module ALU(
     input wire [7:0] Cval,
     input wire [3:0] OP,
     output reg [7:0] ALUOUT,
-    output reg [7:0] ALUSHOW,
-    input clk
+    output reg [7:0] ALUSHOW
 );
     
-always @(posedge clk)
+always @(posedge OP)
 begin
     case(OP)
         4'h0:  ALUOUT=ALUOUT; 
