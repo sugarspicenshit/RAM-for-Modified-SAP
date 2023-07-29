@@ -5,11 +5,10 @@ module basicmux(
     input [7:0] ACCTRIB,
     input [7:0] ALUIN,
     input ALUPSEL,
-    input clk,
     output reg [7:0] ACCAGP
 );
     
-always @(posedge clk)
+always @(ALUPSEL)
 begin 
     if (!ALUPSEL) ACCAGP=ALUIN;
     if (ALUPSEL) ACCAGP=ACCTRIB;

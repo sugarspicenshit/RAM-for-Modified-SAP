@@ -10,11 +10,9 @@ module regbasic (
                 
 always @(posedge clk)
 begin 
-    if (!rst) 
-    begin 
+    if (!rst) begin 
         Q<=8'h00; 
-    end
-    else
+    end else
     begin 
         Q<=D; 
     end

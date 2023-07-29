@@ -42,10 +42,32 @@ wire [7:0] MBRQ;
 wire [7:0] STKQ; 
 //wire [7:0] Memo;
 
+// Destination register demultiplexer
 // Not connected: pcjmp
-demux U1 (AYEA, BEEA, CEEA, MemOut, PortOUT, pcjmp, MARA, seldst, clk, buswires, dsten);
+demux U1 (
+    .A(AYEA), // seldst = 4'h1
+    .B(BEEA), // seldst = 4'h2
+    .C(CEEA), // seldst = 4'h3
+    .Mem(MemOut), // seldst = 4'h4; to RAM's data in port
+    .outbuf(PortOUT), // seldst = 4'h5
+    .pcjmp(pcjmp), // seldst = 4'h6
+    .MAR(MARA), // seldst = 4'h7
+    .sel(seldst), 
+    .busin(buswires) 
+);
 
-sourcemux U2 (AYEQ, BEEQ, CEEQ, INQ, accagp, MBRQ, STKQ, selsrc, clk, buswires, srcen);
+// Source register multiplxer
+sourcemux U2 (
+    .A(AYEQ), // selsrc = 4'h1
+    .B(BEEQ), // selsrc = 4'h2
+    .C(CEEQ), // selsrc = 4'h3
+    .INna(INQ), // selsrc = 4'h4
+    .ALUOUT(accagp), // selsrc = 4'h5
+    .MBR(MBRQ), // selsrc = 4'h6; from RAM's data out port
+    .PC(STKQ), // selsrc = 4'h7
+    .sel(selsrc), 
+    .busout(buswires)
+);
 
 regbasic U3 (INQ, PortIN, rst, clk);    // INR 
 regbasic U4 (AYEQ, AYEA, rst, clk);     // ACC
@@ -60,7 +82,11 @@ ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult, clk);
 
 PC U7(ACCAGP, clk, pcopsel, rst, PCOUT);
 
-basicmux U11 (IRJUMP,MARQ,SELJUMP,clk,ACCAGP);
-//basicmux U6(AYEA,alutrib,alupsel,clk,accagp);
+basicmux U11 (
+    .ACCTRIB(IRJUMP), // ALUPSEL = 1'h1;
+    .ALUIN(MARQ), // ALUPSEL = 1'h0;
+    .ALUPSEL(SELJUMP), 
+    .ACCAGP(ACCAGP)
+);
 
 endmodule

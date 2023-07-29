@@ -11,26 +11,21 @@ module sourcemux (
     input wire [7:0] PC,
     input wire [3:0] sel,
     input wire clk,
-    output reg [7:0] outna,
-    input wire srcoe
+    output reg [7:0] busout
 );
 
 
-always @(posedge clk)
-begin 
-    if (srcoe) 
-    begin
-        case (sel)
-            4'h1: outna=A;
-            4'h2: outna=B;
-            4'h3: outna=C;
-            4'h4: outna=INna;
-            4'h5: outna=ALUOUT;
-            4'h6: outna=MBR;
-            4'h7: outna=PC;
-            default: outna=A;
-        endcase
-    end
+always @(sel) begin 
+    case (sel)
+        4'h1: busout=A;
+        4'h2: busout=B;
+        4'h3: busout=C;
+        4'h4: busout=INna;
+        4'h5: busout=ALUOUT;
+        4'h6: busout=MBR;
+        4'h7: busout=PC;
+        default: busout=A;
+    endcase
 end
 
 endmodule

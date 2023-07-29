@@ -10,27 +10,21 @@ module demux (
     output reg [7:0] pcjmp,
     output reg [7:0] MAR,
     input wire [3:0] sel,
-    input wire clk,
-    input wire [7:0] busfin,
-    input wire busin
+    input wire [7:0] busin
 );
 
 
-always @(posedge clk)
-begin 
-    if (busin) 
-    begin
-        case (sel)
-            4'h1: A=busfin;
-            4'h2: B=busfin;
-            4'h3: C=busfin;
-            4'h4: pcjmp=busfin;
-            4'h5: outbuf=busfin;
-            4'h6: MAR=busfin;
-            4'h7: Mem=busfin;
-            default: outbuf=busfin;
-        endcase
-    end
+always @(sel) begin 
+    case (sel)
+        4'h1: A=busin;
+        4'h2: B=busin;
+        4'h3: C=busin;
+        4'h4: pcjmp=busin;
+        4'h5: outbuf=busin;
+        4'h6: MAR=busin;
+        4'h7: Mem=busin;
+        default: outbuf=busin;
+    endcase
 end
 
 endmodule

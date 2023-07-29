@@ -26,17 +26,18 @@ module SAP(
 );
 
 wire [7:0] MBRA;  
-wire [15:0] ROMDATA; 
-//wire dstoe;
-//wire srcoe;
+wire [15:0] ROMDATA;
 wire [7:0] IRJUMP;
 wire IRREF;
 wire SELJUMP;
 wire wr_en;
 wire [7:0] MARQ;
 
-ROMBasic U1 (PC, ROMDATA, clk, rst); 
-// IRDECODER U2 (INT, ROMDATA[15:8], IRJUMP, IRREF, SELJUMP, aluopsel, pcopsel, seldst, selsrc, state, IR, dstoe, srcoe, clk, rst, wr_en);
+ROMBasic U1 (
+    .ADDR(PC), 
+    .DATA(ROMDATA)
+); 
+
 IRDECODER U2 (
     .INT(INT),
     .OPCODE(ROMDATA[15:8]),
@@ -56,16 +57,39 @@ IRDECODER U2 (
     .wr_en(wr_en)
 );
 
+datapath U3 (
+    .PortIN(INR), 
+    .PortOUT(OUTR), 
+    .PCOUT(PC), 
+    .ALUREsult(ALUREsult), 
+    .seldst(seldst), 
+    .selsrc(selsrc), 
+    .IRJUMP(IRJUMP), 
+    .IRREF(IRREF), 
+    .SELJUMP(SELJUMP), 
+    .dsten(dstoe), 
+    .srcen(srcoe), 
+    .clk(clk), 
+    .op(aluopsel), 
+    .pcopsel(pcopsel), 
+    .rst(rst), 
+    .AYEQ(AYE), 
+    .BEEQ(BEE), 
+    .CEEQ(CEE), 
+    .MemOut(MemOut), 
+    .MARQ(MARQ), 
+    .ACCAGP(MAR), 
+    .MBRA(MBRA)
+);
 
-//datapath U3 (INR,OUTR,PC,ALUREsult,seldst,selsrc,IRJUMP,IRREF,SELJUMP,dstoe,srcoe,clk,aluopsel,pcopsel,rst,AYE,BEE,CEE,MemOut,MAR,PCA,MBRA);
-datapath U3 (INR, OUTR, PC, ALUREsult, seldst, selsrc, IRJUMP, IRREF, SELJUMP, dstoe, srcoe, clk, aluopsel, pcopsel, rst, AYE, BEE, CEE, MemOut, MARQ, MAR, MBRA);
-
-// RAM (addr, data_in, data_out, wr_en, clk)
-// This is ok i think maybe idk
-// RAM U4 (MARQ, CEE, MBRA, wr_en, clk);
-RAM U4 (ROMDATA[7:0], MemOut, MBRA, wr_en, clk, rst); 
-    
-//RAM U12(ROMDATA, MemOut, CEE, wr_en, clk);
+RAM U4 (
+    .addr(ROMDATA[7:0]), 
+    .data_in(MemOut), 
+    .data_out(MBRA), 
+    .wr_en(wr_en), 
+    .clk(clk), 
+    .rst(rst)
+); 
    
             
 endmodule

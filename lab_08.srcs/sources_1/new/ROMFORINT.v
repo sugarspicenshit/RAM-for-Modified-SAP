@@ -22,17 +22,11 @@
 
 module ROMBasic(
     input wire [7:0] ADDR,
-    output reg [15:0] DATA,
-    input wire clk,
-    input wire rst
+    output reg [15:0] DATA
 );
     
-always@(posedge clk)
+always@(ADDR)
 begin
-if(!rst)       DATA=16'h0000;
-      
-if(rst)
-      begin
       case(ADDR)
       8'd0:    DATA=16'h0D00;   // SW 
       8'd1:    DATA=16'h1100;   // LW.A 
@@ -290,9 +284,7 @@ if(rst)
       8'd253:  DATA=16'h0000;
       8'd254:  DATA=16'h0000;
       endcase
-      end
-      
-      end
+end
 
 endmodule
 
