@@ -391,6 +391,13 @@ begin
                                             aluopsel=4'h0;
                                             pcopsel=3'h4;   // Return to stored PC value
                                             wr_en=1'h0;
+                                        end
+                                8'h1f:  begin               // RET.i (return from interrupt vector)
+                                            seldst=4'h6;
+                                            selsrc=4'h7;
+                                            aluopsel=4'h0;
+                                            pcopsel=3'h2;
+                                            wr_en=1'h0;
                                         end   
                                 8'hff:  begin               // HLT
                                             seldst=4'h0;
@@ -624,7 +631,14 @@ begin
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;  
-                                        end                                    
+                                        end
+                                8'h1f:  begin               // RET.i (return from interrupt vector)
+                                            seldst=4'h1;
+                                            selsrc=4'h1;
+                                            aluopsel=4'h0;
+                                            pcopsel=3'h0;
+                                            wr_en=1'h0;
+                                        end                                       
                             endcase
 
                             state=state+8'h01;

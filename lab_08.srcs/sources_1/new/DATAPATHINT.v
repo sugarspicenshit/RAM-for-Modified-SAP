@@ -80,6 +80,8 @@ regbasic U12 (CEEQ, CEEA, rst, clk);    // C
 regbasic U8 (MARQ, MARA, rst, clk);     // MAR
 regbasic U9 (MBRQ, MBRA, rst, clk);     // MBR
  
+// Store the current program counter state before
+// jumping to the interrupt vector
 d4breg U10(PCOUT, clk, STKQ, IRREF);    // Stack
 
 ALU U6 (
