@@ -8,7 +8,7 @@ module basicmux(
     output reg [7:0] ACCAGP
 );
     
-always @(ALUPSEL)
+always @*
 begin 
     if (!ALUPSEL) ACCAGP=ALUIN;
     if (ALUPSEL) ACCAGP=ACCTRIB;

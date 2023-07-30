@@ -8,7 +8,7 @@ reg [7:0] INR;
 reg INT, rst, clk;
 
 // Outputs
-wire [7:0] OUTR, PC, PCA, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR;
+wire [7:0] OUTR, PC, PCA, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR, LIT;
 wire [3:0] state, aluopsel, seldst, selsrc;
 wire [1:0] pcopsel;
 
@@ -31,6 +31,7 @@ SAP UUT (
     .AYE(AYE),
     .BEE(BEE),
     .CEE(CEE),
+    .LIT(LIT),
     .MemOut(MemOut),
     .MAR(MAR)
 );

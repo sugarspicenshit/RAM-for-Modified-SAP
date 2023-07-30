@@ -11,7 +11,6 @@ module sourcemux (
     input wire [7:0] PC,
     input wire [7:0] LIT,
     input wire [3:0] sel,
-    input wire clk,
     output reg [7:0] busout
 );
 

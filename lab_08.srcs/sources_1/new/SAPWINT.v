@@ -19,6 +19,7 @@ module SAP(
     output wire [7:0] AYE,
     output wire [7:0] BEE,
     output wire [7:0] CEE,
+    output wire [7:0] LIT,
     output wire [7:0] MemOut,
     output wire [7:0] MAR
 );
@@ -31,6 +32,8 @@ wire SELJUMP;
 wire wr_en;
 wire [7:0] MARQ;
 wire zf;
+
+assign LIT = ROMDATA[7:0];
 
 ROMBasic U1 (
     .ADDR(PC), 
