@@ -2,7 +2,7 @@
 
 
 module IRDECODER(
-    input wire INT,
+    input wire [2:0] INT,
     input wire [7:0] OPCODE,
     output reg [7:0] IRJUMP,
     output reg IRREF,
@@ -63,7 +63,7 @@ begin
         begin 
             // Prime the interrupt routine, but let the current cycle (fetch,
             // decode, execute) finish before servicing the interrupt.
-            if(INT==1'b1 & state!=4'h0) begin 
+            if((INT==3'h1 || INT==3'h2 || INT==3'h3 || INT==3'h4) & state!=4'h0) begin 
                 prima=1'b1;
             end
             if(prima==1'b1 & state==4'h0) begin 
@@ -73,27 +73,95 @@ begin
             
             // Program counter jumps to the interrupt vector then resumes normal
             // operation throughout the interrupt vector until the return instruction.
-            if(statex) begin 
-                case(state)
-                    3'h0:   begin
-                                IRJUMP=8'd33;   // Jump vector For Interrupt
-                                IRREF=1'b1;     // Stack Obtain data
-                                SELJUMP=1'b1;   // IRJMP Selected
-                                state=state+1;
-                            end
-                    3'h1:   begin
-                                IRREF=1'b0;     // Stack Refresh
-                                SELJUMP=1'b1;   // IRJUMP Selected
-                                pcopsel=3'h2;   // Load data from IRJMP to PC
-                                state=state+1;
-                            end
-                    3'h2:   begin
-                                SELJUMP=1'b0;   // IRJUMP Selected
-                                pcopsel=3'h0;   // PC Refresh
-                                state=4'h0;     // Reset State
-                                statex=1'b0;    // Ends ISR Vector
-                            end                       
-                endcase
+            if(statex) begin
+                if(INT==3'h2)begin 
+                    case(state)
+                        3'h0:   begin
+                                    IRJUMP=8'd33;   // Jump vector For Interrupt
+                                    IRREF=1'b1;     // Stack Obtain data
+                                    SELJUMP=1'b1;   // IRJMP Selected
+                                    state=state+1;
+                                end
+                        3'h1:   begin
+                                    IRREF=1'b0;     // Stack Refresh
+                                    SELJUMP=1'b1;   // IRJUMP Selected
+                                    pcopsel=3'h2;   // Load data from IRJMP to PC
+                                    state=state+1;
+                                end
+                        3'h2:   begin
+                                    SELJUMP=1'b0;   // IRJUMP Selected
+                                    pcopsel=3'h0;   // PC Refresh
+                                    state=4'h0;     // Reset State
+                                    statex=1'b0;    // Ends ISR Vector
+                                end                       
+                    endcase
+                    end
+                if(INT==3'h1) begin //US Time
+                    case(state)
+                        3'h0:   begin
+                                    IRJUMP=8'd36;   // Jump vector For Interrupt
+                                    IRREF=1'b1;     // Stack Obtain data
+                                    SELJUMP=1'b1;   // IRJMP Selected
+                                    state=state+1;
+                                end
+                        3'h1:   begin
+                                    IRREF=1'b0;     // Stack Refresh
+                                    SELJUMP=1'b1;   // IRJUMP Selected
+                                    pcopsel=3'h2;   // Load data from IRJMP to PC
+                                    state=state+1;
+                                end
+                        3'h2:   begin
+                                    SELJUMP=1'b0;   // IRJUMP Selected
+                                    pcopsel=3'h0;   // PC Refresh
+                                    state=4'h0;     // Reset State
+                                    statex=1'b0;    // Ends ISR Vector
+                                end                       
+                    endcase
+                    end
+                  if(INT==3'h3) begin //UK Time
+                    case(state)
+                        3'h0:   begin
+                                    IRJUMP=8'd35;   // Jump vector For Interrupt
+                                    IRREF=1'b1;     // Stack Obtain data
+                                    SELJUMP=1'b1;   // IRJMP Selected
+                                    state=state+1;
+                                end
+                        3'h1:   begin
+                                    IRREF=1'b0;     // Stack Refresh
+                                    SELJUMP=1'b1;   // IRJUMP Selected
+                                    pcopsel=3'h2;   // Load data from IRJMP to PC
+                                    state=state+1;
+                                end
+                        3'h2:   begin
+                                    SELJUMP=1'b0;   // IRJUMP Selected
+                                    pcopsel=3'h0;   // PC Refresh
+                                    state=4'h0;     // Reset State
+                                    statex=1'b0;    // Ends ISR Vector
+                                end                       
+                    endcase
+                    end
+                   if(INT==3'h4) begin //UAE Time
+                    case(state)
+                        3'h0:   begin
+                                    IRJUMP=8'd34;   // Jump vector For Interrupt
+                                    IRREF=1'b1;     // Stack Obtain data
+                                    SELJUMP=1'b1;   // IRJMP Selected
+                                    state=state+1;
+                                end
+                        3'h1:   begin
+                                    IRREF=1'b0;     // Stack Refresh
+                                    SELJUMP=1'b1;   // IRJUMP Selected
+                                    pcopsel=3'h2;   // Load data from IRJMP to PC
+                                    state=state+1;
+                                end
+                        3'h2:   begin
+                                    SELJUMP=1'b0;   // IRJUMP Selected
+                                    pcopsel=3'h0;   // PC Refresh
+                                    state=4'h0;     // Reset State
+                                    statex=1'b0;    // Ends ISR Vector
+                                end                       
+                    endcase
+                    end
             end
         end
     
