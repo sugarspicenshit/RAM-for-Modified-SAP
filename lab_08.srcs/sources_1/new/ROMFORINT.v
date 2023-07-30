@@ -30,7 +30,7 @@ begin
       case(ADDR)
       8'd0:    DATA=16'h1400;   // LW.Ai 00
       8'd1:    DATA=16'h1801;   // ADD.Ai 01     
-      8'd2:    DATA=16'h1D00;   // JMP 00  
+      8'd2:    DATA=16'h1D01;   // JMP 01  
       8'd3:    DATA=16'h0000; 
       8'd4:    DATA=16'h0000; 
       8'd5:    DATA=16'h0000; 

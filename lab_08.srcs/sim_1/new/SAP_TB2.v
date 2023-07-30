@@ -8,7 +8,7 @@ reg [7:0] INR;
 reg INT, rst, clk;
 
 // Outputs
-wire [7:0] OUTR, PC, PCA, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR, LIT;
+wire [7:0] OUTR, PC, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR, LIT, ACCAGP;
 wire [3:0] state, aluopsel, seldst, selsrc;
 wire [1:0] pcopsel;
 
@@ -20,7 +20,6 @@ SAP UUT (
     .clk(clk),
     .OUTR(OUTR),
     .PC(PC),
-    .PCA(PCA),
     .state(state),
     .IR(IR),
     .aluopsel(aluopsel),
@@ -33,7 +32,8 @@ SAP UUT (
     .CEE(CEE),
     .LIT(LIT),
     .MemOut(MemOut),
-    .MAR(MAR)
+    .MAR(MAR),
+    .ACCAGP(ACCAGP)
 );
 
 // Clock generation

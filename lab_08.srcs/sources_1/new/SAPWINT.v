@@ -8,7 +8,6 @@ module SAP(
     input wire clk,
     output wire [7:0] OUTR,
     output wire [7:0] PC,           // PC
-    output wire [7:0] PCA,
     output wire [3:0] state,
     output wire [7:0] IR,
     output wire [3:0] aluopsel,
@@ -21,7 +20,8 @@ module SAP(
     output wire [7:0] CEE,
     output wire [7:0] LIT,
     output wire [7:0] MemOut,
-    output wire [7:0] MAR
+    output wire [7:0] MAR,
+    output wire [7:0] ACCAGP
 );
 
 wire [7:0] MBRA;  
@@ -30,7 +30,6 @@ wire [7:0] IRJUMP;
 wire IRREF;
 wire SELJUMP;
 wire wr_en;
-wire [7:0] MARQ;
 wire zf;
 
 assign LIT = ROMDATA[7:0];
@@ -78,8 +77,8 @@ datapath U3 (
     .BEEQ(BEE), 
     .CEEQ(CEE), 
     .MemOut(MemOut), 
-    .MARQ(MARQ), 
-    .ACCAGP(MAR), 
+    .MARQ(MAR), 
+    .ACCAGP(ACCAGP), 
     .MBRA(MBRA),
     .LIT(ROMDATA[7:0]),
     .zf(zf)

@@ -313,7 +313,7 @@ begin
                                             seldst=4'h6;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0])
                                             aluopsel=4'h0;
-                                            pcopsel=3'h2;   // Jump to address
+                                            pcopsel=3'h0;   // Jump to address
                                         end   
                                 8'hff:  begin               // HLT
                                             seldst=4'h0;
@@ -547,16 +547,14 @@ begin
                             state=state+8'h01;
                         end     
                 4'h5:   begin 
-                            if(IR==8'h06) 
-                            begin
+                            if(IR==8'h06 | IR==8'h1d) begin
                                 pcopsel=3'h0;      
                                 state=state+8'h01;
                             end
-                            else
-                            begin
+                            else begin
                                 // Increment PC and move to next state
-                                if (!zf) 
-                                    pcopsel=3'h1;
+                                if (zf) 
+                                    pcopsel=3'h0;
                                 else
                                     pcopsel=3'h1;
                                     
@@ -569,7 +567,7 @@ begin
                                 state=state+1;
                             end // PC<-MAR
                             else
-                            begin                         
+                            begin                        
                                 pcopsel=3'h0;
                                 
                                 // Proceed to fetch cycle
