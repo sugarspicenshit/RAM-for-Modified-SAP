@@ -10,7 +10,7 @@ module ALU(
     output reg [7:0] ALUSHOW
 );
     
-always @(posedge OP)
+always @(OP)
 begin
     case(OP)
         4'h0:  ALUOUT=ALUOUT; 

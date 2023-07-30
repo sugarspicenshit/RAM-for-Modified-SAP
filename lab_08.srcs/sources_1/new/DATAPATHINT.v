@@ -78,13 +78,13 @@ regbasic U9 (MBRQ, MBRA, rst, clk);     // MBR
  
 d4breg U10(PCOUT, clk, STKQ, IRREF);    // Stack
 
-ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult, clk);
+ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult);
 
 PC U7(ACCAGP, clk, pcopsel, rst, PCOUT);
 
 basicmux U11 (
-    .ACCTRIB(IRJUMP), // ALUPSEL = 1'h1;
-    .ALUIN(MARQ), // ALUPSEL = 1'h0;
+    .ACCTRIB(IRJUMP), // ALUPSEL = 1'h1; interrupt vector
+    .ALUIN(MARQ), // ALUPSEL = 1'h0
     .ALUPSEL(SELJUMP), 
     .ACCAGP(ACCAGP)
 );
