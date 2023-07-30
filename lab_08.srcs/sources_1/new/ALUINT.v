@@ -15,6 +15,7 @@ module ALU(
 always @(ACC or BREG or Cval or OP)
 begin
     case(OP)
+        // No operation
         4'h0:  ALUOUT=ALUOUT;
         // Operations involving ACC and B 
         4'h1:  ALUOUT=ACC+BREG; // ADDAB
@@ -34,6 +35,7 @@ begin
         4'ha:  ALUOUT=ACC&LIT; // ANDAi
         4'hb:  ALUOUT=ACC|LIT; // ORAi
         4'hc:  ALUOUT=ACC^LIT; // XORAi
+        // Default case: no operation
         default: ALUOUT=ALUOUT;
     endcase
     

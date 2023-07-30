@@ -14,7 +14,7 @@ module demux (
 );
 
 
-always @(sel) begin 
+always @* begin 
     case (sel)
         4'h1: A=busin;
         4'h2: B=busin;

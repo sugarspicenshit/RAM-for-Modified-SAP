@@ -103,9 +103,6 @@ begin
     
         // Begin fetch, decode, execute cycle
         if(!statex) begin
-            dstoe=1'b1;
-            srcoe=1'b1;
-            
             // SAP FSM
             case(state)
                 4'h0:   begin
