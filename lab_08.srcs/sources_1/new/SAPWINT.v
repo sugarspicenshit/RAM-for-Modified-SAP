@@ -21,7 +21,8 @@ module SAP(
     output wire [7:0] LIT,
     output wire [7:0] MemOut,
     output wire [7:0] MAR,
-    output wire [7:0] ACCAGP
+    output wire [7:0] ACCAGP,
+    output wire [7:0] STACK
 );
 
 wire [7:0] MBRA;  
@@ -81,7 +82,8 @@ datapath U3 (
     .ACCAGP(ACCAGP), 
     .MBRA(MBRA),
     .LIT(ROMDATA[7:0]),
-    .zf(zf)
+    .zf(zf),
+    .STACK(STACK)
 );
 
 RAM U4 (

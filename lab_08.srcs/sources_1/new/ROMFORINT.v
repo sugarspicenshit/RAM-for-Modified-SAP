@@ -28,24 +28,24 @@ module ROMBasic (
 always @(ADDR)
 begin
       case(ADDR)
-      8'd0: DATA=16'h1431;
-      8'd1: DATA=16'h03FF;
-      8'd2: DATA=16'h0000;
-      8'd3: DATA=16'h0000;
-      8'd4: DATA=16'h0000;
-      8'd5: DATA=16'h0000;
-      8'd6: DATA=16'h0000;
-      8'd7: DATA=16'h0000;
-      8'd8: DATA=16'h0000;
-//      8'd0:    DATA=16'h1400;   // LW.Ai 00
-//      8'd1:    DATA=16'h1801;   // ADD.Ai 01     
-//      8'd2:    DATA=16'h1560;   // LW.Bi 60  
-//      8'd3:    DATA=16'h1707;   // BEQ.AB
-//      8'd4:    DATA=16'h1D01; 
-//      8'd5:    DATA=16'h0000; 
-//      8'd6:    DATA=16'h0000;
-//      8'd7:    DATA=16'h1624;   // LW.Ci 24          
-//      8'd8:    DATA=16'h1E00;
+//      8'd0: DATA=16'h1431;
+//      8'd1: DATA=16'h03FF;
+//      8'd2: DATA=16'h0000;
+//      8'd3: DATA=16'h0000;
+//      8'd4: DATA=16'h0000;
+//      8'd5: DATA=16'h0000;
+//      8'd6: DATA=16'h0000;
+//      8'd7: DATA=16'h0000;
+//      8'd8: DATA=16'h0000;
+      8'd0:    DATA=16'h143A;   // LW.Ai 3A
+      8'd1:    DATA=16'h1801;   // ADD.Ai 01     
+      8'd2:    DATA=16'h153C;   // LW.Bi 3C  
+      8'd3:    DATA=16'h1707;   // BEQ.AB
+      8'd4:    DATA=16'h1D01; 
+      8'd5:    DATA=16'h0000; 
+      8'd6:    DATA=16'h0000;
+      8'd7:    DATA=16'h1624;   // LW.Ci 24          
+      8'd8:    DATA=16'h1E00;   // RET
       8'd9:    DATA=16'h0000;
       8'd10:   DATA=16'h0000;
       8'd11:   DATA=16'h0000;

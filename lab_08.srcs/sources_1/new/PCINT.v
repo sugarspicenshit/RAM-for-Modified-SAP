@@ -6,15 +6,18 @@ module PC (
     input clk,              // Clock
     input [2:0] pcopsel,    // Selector Control Line
     input rst,              // Reset pin
-    output reg [7:0] PCOUT  // Output Port
+    output reg [7:0] PCOUT, // Output Port
+    output reg [7:0] STACK
 );
 
-reg [7:0] STACK;  
+//reg [7:0] STACK;  
     
 always @(posedge clk)
 begin
-    if (!rst) 
+    if (!rst) begin
         PCOUT=8'h00; // resets  counter position
+        STACK=8'h00;
+    end
     if (rst) 
     begin
         case (pcopsel) 

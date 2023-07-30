@@ -25,7 +25,8 @@ module datapath(
     output wire [7:0] ACCAGP,
     input wire [7:0] MBRA,
     input wire [7:0] LIT,
-    output wire zf
+    output wire zf,
+    output wire [7:0] STACK
 );
 
 wire [7:0] INQ;
@@ -92,7 +93,7 @@ ALU U6 (
     .zf(zf)
 );
 
-PC U7(ACCAGP, clk, pcopsel, rst, PCOUT);
+PC U7(ACCAGP, clk, pcopsel, rst, PCOUT, STACK);
 
 basicmux U11 (
     .ACCTRIB(IRJUMP), // ALUPSEL = 1'h1; interrupt vector
