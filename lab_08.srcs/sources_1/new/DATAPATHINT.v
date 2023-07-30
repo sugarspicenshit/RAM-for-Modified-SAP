@@ -81,7 +81,16 @@ regbasic U9 (MBRQ, MBRA, rst, clk);     // MBR
  
 d4breg U10(PCOUT, clk, STKQ, IRREF);    // Stack
 
-ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult, zf);
+ALU U6 (
+    .ACC(AYEQ), 
+    .BREG(BEEQ), 
+    .Cval(CEEQ), 
+    .LIT(LIT),
+    .OP(op), 
+    .ALUOUT(accagp), 
+    .ALUSHOW(ALUREsult), 
+    .zf(zf)
+);
 
 PC U7(ACCAGP, clk, pcopsel, rst, PCOUT);
 
