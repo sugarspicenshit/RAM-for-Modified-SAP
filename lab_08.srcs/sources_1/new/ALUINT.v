@@ -25,7 +25,7 @@ begin
         4'h5:  ALUOUT=ACC|BREG; // ORLAB
         4'h6:  ALUOUT=ACC^BREG; // XORAB
         // Branching operations
-        4'h7:  begin            // EQAB
+        4'h7:   begin           // EQAB
                    ALUOUT=ACC-BREG;
                    zf=(ALUOUT==0);     
                 end

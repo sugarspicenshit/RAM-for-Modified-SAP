@@ -20,23 +20,32 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ROMBasic(
+module ROMBasic (
     input wire [7:0] ADDR,
     output reg [15:0] DATA
 );
     
-always@(ADDR)
+always @(ADDR)
 begin
       case(ADDR)
-      8'd0:    DATA=16'h1400;   // LW.Ai 00
-      8'd1:    DATA=16'h1801;   // ADD.Ai 01     
-      8'd2:    DATA=16'h1D01;   // JMP 01  
-      8'd3:    DATA=16'h0000; 
-      8'd4:    DATA=16'h0000; 
-      8'd5:    DATA=16'h0000; 
-      8'd6:    DATA=16'h0000;
-      8'd7:    DATA=16'h0000;       
-      8'd8:    DATA=16'h0000;
+      8'd0: DATA=16'h1431;
+      8'd1: DATA=16'h03FF;
+      8'd2: DATA=16'h0000;
+      8'd3: DATA=16'h0000;
+      8'd4: DATA=16'h0000;
+      8'd5: DATA=16'h0000;
+      8'd6: DATA=16'h0000;
+      8'd7: DATA=16'h0000;
+      8'd8: DATA=16'h0000;
+//      8'd0:    DATA=16'h1400;   // LW.Ai 00
+//      8'd1:    DATA=16'h1801;   // ADD.Ai 01     
+//      8'd2:    DATA=16'h1560;   // LW.Bi 60  
+//      8'd3:    DATA=16'h1707;   // BEQ.AB
+//      8'd4:    DATA=16'h1D01; 
+//      8'd5:    DATA=16'h0000; 
+//      8'd6:    DATA=16'h0000;
+//      8'd7:    DATA=16'h1624;   // LW.Ci 24          
+//      8'd8:    DATA=16'h1E00;
       8'd9:    DATA=16'h0000;
       8'd10:   DATA=16'h0000;
       8'd11:   DATA=16'h0000;
@@ -88,7 +97,8 @@ begin
       8'd57:   DATA=16'h0000;
       8'd58:   DATA=16'h0000;
       8'd59:   DATA=16'h0000;
-      8'd60:   DATA=16'h0000;
+      // if statement body
+      8'd60:   DATA=16'h0000;   // LW.B
       8'd61:   DATA=16'h0000;
       8'd62:   DATA=16'h0000;
       8'd63:   DATA=16'h0000;

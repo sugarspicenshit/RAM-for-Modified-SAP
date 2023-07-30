@@ -101,15 +101,11 @@ begin
         if(!statex) begin
             // SAP FSM
             case(state)
-                4'h0:   begin
-                            // Buffer state to allow the OPCODE to reach from ROM
-                            state=state+1;
-                        end
-                4'h1:   begin                               // FETCH 
+                4'h0:   begin                               // FETCH 
                             IR=OPCODE;                      
                             state=state+1;
                         end
-                4'h2:   begin                               // DECODE PH1 
+                4'h1:   begin                               // DECODE PH1 
                             case(IR)                        
                                 8'h00:  begin               // NOP 
                                             seldst=4'h1;    
@@ -275,8 +271,13 @@ begin
                                 8'h17:  begin               // BEQ.AB (branch if A equals B)
                                             seldst=4'h6;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0]) 
-                                            aluopsel=4'h7;  // EQAB
-                                            pcopsel=3'h0;
+                                            aluopsel=4'h7;  
+                                            if (zf)
+                                                // Branch to indicated instruction
+                                                pcopsel=3'h2;
+                                            else
+                                                // Do nothing
+                                                pcopsel=3'h0;
                                             wr_en=1'h0;         
                                         end
                                 8'h18:  begin               // ADD.Ai (ACC <- ACC + immediate value)
@@ -314,6 +315,12 @@ begin
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0])
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;   // Jump to address
+                                        end
+                                8'h1e:  begin               // RET (return)
+                                            seldst=4'h1;    
+                                            selsrc=4'h1;
+                                            aluopsel=4'h0;
+                                            pcopsel=3'h5;   // Return to stored PC value
                                         end   
                                 8'hff:  begin               // HLT
                                             seldst=4'h0;
@@ -330,10 +337,10 @@ begin
                             else
                                 state=4'hf;
                         end
-                4'h3:   begin 
+                4'h2:   begin 
                             state=state+4'h1;
                         end
-                4'h4:   begin                               // EXECUTE PH2 
+                4'h3:   begin                               // EXECUTE PH2 
                             case(IR)                        
                                 8'h00:  begin               // NOP 
                                             seldst=4'h1; 
@@ -477,21 +484,21 @@ begin
                                         end
                                 8'h14:  begin               // LW.Ai (Load immediate to A)
                                             seldst=4'h1;    // To A
-                                            selsrc=4'h8;    // From LIT (ROMDATA[7:0])
+                                            selsrc=4'h1;    
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;
                                         end
                                 8'h15:  begin               // LW.Bi (Load immediate to B)
                                             seldst=4'h2;    // To B
-                                            selsrc=4'h8;    // From LIT (ROMDATA[7:0])
+                                            selsrc=4'h2;    
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;
                                         end
                                 8'h16:  begin               // LW.Ci (Load immediate to C)
                                             seldst=4'h3;    // To C
-                                            selsrc=4'h8;    // From LIT (ROMDATA[7:0])
+                                            selsrc=4'h3;    
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;
@@ -501,8 +508,11 @@ begin
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0]) 
                                             aluopsel=4'h7;  // EQAB
                                             if (zf)
-                                                pcopsel=3'h4;
+                                                // Store current PC value temporarily and prepare
+                                                // for branching
+                                                pcopsel=3'h4; 
                                             else
+                                                // Do nothing
                                                 pcopsel=3'h0;
                                             wr_en=1'h0;         
                                         end 
@@ -541,12 +551,18 @@ begin
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0])
                                             aluopsel=4'h0;
                                             pcopsel=3'h2;   // Jump to address
-                                        end                                   
+                                        end 
+                                8'h1e:  begin               // RET (return)
+                                            seldst=4'h1;    
+                                            selsrc=4'h1;
+                                            aluopsel=4'h0;
+                                            pcopsel=3'h0;  
+                                        end                                    
                             endcase
 
                             state=state+8'h01;
                         end     
-                4'h5:   begin 
+                4'h4:   begin 
                             if(IR==8'h06 | IR==8'h1d) begin
                                 pcopsel=3'h0;      
                                 state=state+8'h01;
@@ -561,7 +577,7 @@ begin
                                 state=state+8'h01;
                             end
                         end
-                4'h6:   begin 
+                4'h5:   begin 
                             if(IR==8'h06) 
                             begin 
                                 state=state+1;
@@ -574,7 +590,7 @@ begin
                                 state=8'h00;
                             end
                         end
-                4'h7:   begin 
+                4'h6:   begin 
                             if(IR==8'h06) 
                             begin
                                 pcopsel=3'h0; 
@@ -586,15 +602,15 @@ begin
                                 state=4'h0;
                             end
                         end
-                4'h8:   begin 
+                4'h7:   begin 
                             pcopsel=3'h2; 
                             state=4'h9;
                         end
-                4'h9:   begin 
+                4'h8:   begin 
                             pcopsel=3'h0; 
                             state=8'ha;
                         end
-                4'ha:   begin 
+                4'h9:   begin 
                             // IR=OPCODE;
                             pcopsel=3'h0; 
                             state=8'h0;
