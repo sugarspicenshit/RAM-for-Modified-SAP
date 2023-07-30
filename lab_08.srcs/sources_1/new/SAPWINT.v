@@ -3,7 +3,7 @@
 
 module SAP(
     input wire [7:0] INR,
-    input wire INT,
+    input wire [3:0] INT,
     input wire rst,
     input wire clk,
     output wire [7:0] OUTR,

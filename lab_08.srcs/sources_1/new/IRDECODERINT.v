@@ -2,7 +2,7 @@
 
 
 module IRDECODER(
-    input wire [2:0] INT,
+    input wire [3:0] INT,
     input wire [7:0] OPCODE,
     output reg [7:0] IRJUMP,
     output reg IRREF,
@@ -63,7 +63,7 @@ begin
         begin 
             // Prime the interrupt routine, but let the current cycle (fetch,
             // decode, execute) finish before servicing the interrupt.
-            if((INT==3'h1 || INT==3'h2 || INT==3'h3 || INT==3'h4) & state!=4'h0) begin 
+            if((INT==4'b0001 || INT==4'b0010 || INT==4'b0100 || INT==4'b1000) & state!=4'h0) begin 
                 prima=1'b1;
             end
             if(prima==1'b1 & state==4'h0) begin 
@@ -74,7 +74,7 @@ begin
             // Program counter jumps to the interrupt vector then resumes normal
             // operation throughout the interrupt vector until the return instruction.
             if(statex) begin
-                if(INT==3'h2)begin 
+                if(INT==4'b0001)begin // PH TIME 
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd33;   // Jump vector For Interrupt
@@ -96,7 +96,7 @@ begin
                                 end                       
                     endcase
                     end
-                if(INT==3'h1) begin //US Time
+                if(INT==4'b0010) begin //US Time
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd36;   // Jump vector For Interrupt
@@ -118,7 +118,7 @@ begin
                                 end                       
                     endcase
                     end
-                  if(INT==3'h3) begin //UK Time
+                  if(INT==4'b0100) begin //UK Time
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd35;   // Jump vector For Interrupt
@@ -140,7 +140,7 @@ begin
                                 end                       
                     endcase
                     end
-                   if(INT==3'h4) begin //UAE Time
+                   if(INT==4'b1000) begin //UAE Time
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd34;   // Jump vector For Interrupt
