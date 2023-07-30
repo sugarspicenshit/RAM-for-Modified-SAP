@@ -32,6 +32,7 @@ wire IRREF;
 wire SELJUMP;
 wire wr_en;
 wire [7:0] MARQ;
+wire zf;
 
 ROMBasic U1 (
     .ADDR(PC), 
@@ -54,7 +55,8 @@ IRDECODER U2 (
     .srcoe(srcoe),
     .clk(clk),
     .rst(rst),
-    .wr_en(wr_en)
+    .wr_en(wr_en),
+    .zf(zf)
 );
 
 datapath U3 (
@@ -80,7 +82,8 @@ datapath U3 (
     .MARQ(MARQ), 
     .ACCAGP(MAR), 
     .MBRA(MBRA),
-    .LIT(ROMDATA[7:0])
+    .LIT(ROMDATA[7:0]),
+    .zf(zf)
 );
 
 RAM U4 (

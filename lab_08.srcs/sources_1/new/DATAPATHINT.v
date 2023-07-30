@@ -24,7 +24,8 @@ module datapath(
     output wire [7:0] MARQ,
     output wire [7:0] ACCAGP,
     input wire [7:0] MBRA,
-    input wire [7:0] LIT
+    input wire [7:0] LIT,
+    output wire zf
 );
 
 wire [7:0] INQ;
@@ -42,7 +43,6 @@ wire [7:0] MBRQ;
 //wire [7:0] STKA;
 wire [7:0] STKQ; 
 //wire [7:0] Memo;
-wire zf;
 
 // Destination register demultiplexer
 // Not connected: pcjmp

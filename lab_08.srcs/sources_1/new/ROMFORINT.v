@@ -28,9 +28,9 @@ module ROMBasic(
 always@(ADDR)
 begin
       case(ADDR)
-      8'd0:    DATA=16'h0D00;   // SW 
-      8'd1:    DATA=16'h1100;   // LW.A 
-      8'd2:    DATA=16'hFFFF;   // HLT
+      8'd0:    DATA=16'h1400;   // LW.Ai 00
+      8'd1:    DATA=16'h1800;   // ADD.Ai 01     
+      8'd2:    DATA=16'h1D00;   // JMP 00  
       8'd3:    DATA=16'h0000; 
       8'd4:    DATA=16'h0000; 
       8'd5:    DATA=16'h0000; 
