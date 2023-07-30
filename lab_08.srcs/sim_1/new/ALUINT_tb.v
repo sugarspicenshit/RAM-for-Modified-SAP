@@ -6,10 +6,10 @@ module ALUINT_tb;
 // Inputs
 reg [7:0] ACC, BREG, Cval;
 reg [3:0] OP;
-reg clk;
 
 // Outputs
 wire [7:0] ALUOUT, ALUSHOW;
+wire zf;
 
 // Other variables
 integer i;
@@ -22,27 +22,27 @@ ALU UUT (
     .OP(OP),
     .ALUOUT(ALUOUT),
     .ALUSHOW(ALUSHOW),
-    .clk(clk)
+    .zf(zf)
 );
-
-// Clock generation
-always #1
-    clk = ~clk;
     
 // Testing process
 initial begin
     // Initialize values
-    clk = 1'h1;
     ACC = 8'h2a; // Assign random value
     BREG = 8'h11; // Assign random value
     Cval = 8'h00;
     OP = 4'h0; // Initialize operation to none
 
     // Test all ALU operations
-    for (i = 0; i <= 7; i = i + 1) begin
+    for (i = 0; i <= 6; i = i + 1) begin
         OP = i; 
         #2;
     end 
+    
+    // Test A == B operation
+    #2 ACC = 8'h2a;
+    BREG = 8'h2a;
+    #2 OP = 4'h7;
 end
 
 endmodule

@@ -23,7 +23,8 @@ module datapath(
     output wire [7:0] MemOut,
     output wire [7:0] MARQ,
     output wire [7:0] ACCAGP,
-    input wire [7:0] MBRA
+    input wire [7:0] MBRA,
+    input wire [7:0] LIT
 );
 
 wire [7:0] INQ;
@@ -41,6 +42,7 @@ wire [7:0] MBRQ;
 //wire [7:0] STKA;
 wire [7:0] STKQ; 
 //wire [7:0] Memo;
+wire zf;
 
 // Destination register demultiplexer
 // Not connected: pcjmp
@@ -65,6 +67,7 @@ sourcemux U2 (
     .ALUOUT(accagp), // selsrc = 4'h5
     .MBR(MBRQ), // selsrc = 4'h6; from RAM's data out port
     .PC(STKQ), // selsrc = 4'h7
+    .LIT(LIT), // selsrc = 4'h8
     .sel(selsrc), 
     .busout(buswires)
 );
@@ -78,7 +81,7 @@ regbasic U9 (MBRQ, MBRA, rst, clk);     // MBR
  
 d4breg U10(PCOUT, clk, STKQ, IRREF);    // Stack
 
-ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult);
+ALU U6(AYEQ, BEEQ, CEEQ, op, accagp, ALUREsult, zf);
 
 PC U7(ACCAGP, clk, pcopsel, rst, PCOUT);
 

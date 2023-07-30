@@ -79,7 +79,8 @@ datapath U3 (
     .MemOut(MemOut), 
     .MARQ(MARQ), 
     .ACCAGP(MAR), 
-    .MBRA(MBRA)
+    .MBRA(MBRA),
+    .LIT(ROMDATA[7:0])
 );
 
 RAM U4 (

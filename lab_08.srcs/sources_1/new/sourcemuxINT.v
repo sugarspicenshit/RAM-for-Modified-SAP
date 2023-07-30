@@ -9,6 +9,7 @@ module sourcemux (
     input wire [7:0] ALUOUT,
     input wire [7:0] MBR,
     input wire [7:0] PC,
+    input wire [7:0] LIT,
     input wire [3:0] sel,
     input wire clk,
     output reg [7:0] busout
@@ -24,6 +25,7 @@ always @(sel) begin
         4'h5: busout=ALUOUT;
         4'h6: busout=MBR;
         4'h7: busout=PC;
+        4'h8: busout=LIT;
         default: busout=A;
     endcase
 end

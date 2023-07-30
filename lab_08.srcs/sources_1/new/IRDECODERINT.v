@@ -257,6 +257,27 @@ begin
                                             pcopsel=2'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
+                                8'h14:  begin               // LW.Ai (Load immediate to A)
+                                            seldst=4'h1;    // To A
+                                            selsrc=4'h8;    // From LIT (ROMDATA[7:0])
+                                            aluopsel=4'h0;
+                                            pcopsel=2'h0;
+                                            wr_en=1'h0;
+                                        end
+                                8'h15:  begin               // LW.Bi (Load immediate to B)
+                                            seldst=4'h2;    // To B
+                                            selsrc=4'h8;    // From LIT (ROMDATA[7:0])
+                                            aluopsel=4'h0;
+                                            pcopsel=2'h0;
+                                            wr_en=1'h0;
+                                        end
+                                8'h16:  begin               // LW.Ci (Load immediate to C)
+                                            seldst=4'h3;    // To C
+                                            selsrc=4'h8;    // From LIT (ROMDATA[7:0])
+                                            aluopsel=4'h0;
+                                            pcopsel=2'h0;
+                                            wr_en=1'h0;
+                                        end
                                 8'hff:  begin               // HLT
                                             seldst=4'h0;
                                             selsrc=4'h0;
