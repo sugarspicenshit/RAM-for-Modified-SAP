@@ -20,9 +20,7 @@ module SAP(
     output wire [7:0] BEE,
     output wire [7:0] CEE,
     output wire [7:0] MemOut,
-    output wire [7:0] MAR,
-    output wire dstoe,
-    output wire srcoe
+    output wire [7:0] MAR
 );
 
 wire [7:0] MBRA;  
@@ -51,8 +49,6 @@ IRDECODER U2 (
     .selsrc(selsrc),
     .state(state),
     .IR(IR),
-    .dstoe(dstoe),
-    .srcoe(srcoe),
     .clk(clk),
     .rst(rst),
     .wr_en(wr_en),

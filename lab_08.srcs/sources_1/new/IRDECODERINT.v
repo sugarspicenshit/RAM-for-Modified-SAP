@@ -13,8 +13,6 @@ module IRDECODER(
     output reg [3:0] selsrc,
     output reg [3:0] state,
     output reg [7:0] IR,
-    output reg dstoe,
-    output reg srcoe,
     input wire clk,
     input wire rst,
     output reg wr_en,
@@ -48,8 +46,6 @@ begin
         state=4'h0;
         prima=1'b0;
         IR=8'h0;
-        dstoe=1'b1;
-        srcoe=1'b1;
         seldst=4'h0; 
         selsrc=4'h0; 
         aluopsel=4'h0; 
