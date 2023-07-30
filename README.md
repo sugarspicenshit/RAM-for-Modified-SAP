@@ -1,4 +1,4 @@
-# RAM-for-Modified-SAP
+# RAM for Modified SAP
 Implementation of a 256x8 RAM on a modified SAP computer. (Forgive the spaghetti code, I only modified the code that was given to me)
 
 # How to use on Vivado
