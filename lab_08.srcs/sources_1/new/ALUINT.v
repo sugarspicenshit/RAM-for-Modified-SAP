@@ -12,7 +12,7 @@ module ALU(
     output reg zf
 );
     
-always @(ACC or BREG or Cval or OP)
+always @*
 begin
     case(OP)
         // No operation
