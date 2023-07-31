@@ -22,7 +22,9 @@ module SAP(
     output wire [7:0] MemOut,
     output wire [7:0] MAR,
     output wire [7:0] ACCAGP,
-    output wire [7:0] STACK
+    output wire [7:0] STACK,
+    output wire [7:0] RAMOUT,
+    output wire wr_en
 );
 
 wire [7:0] MBRA;  
@@ -30,10 +32,11 @@ wire [15:0] ROMDATA;
 wire [7:0] IRJUMP;
 wire IRREF;
 wire SELJUMP;
-wire wr_en;
+//wire wr_en;
 wire zf;
 
 assign LIT = ROMDATA[7:0];
+assign RAMOUT = MBRA;
 
 ROMBasic U1 (
     .ADDR(PC), 

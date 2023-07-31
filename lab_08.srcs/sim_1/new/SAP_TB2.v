@@ -8,9 +8,10 @@ reg [7:0] INR;
 reg INT, rst, clk;
 
 // Outputs
-wire [7:0] OUTR, PC, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR, LIT, ACCAGP, STACK;
+wire [7:0] OUTR, PC, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR, LIT, ACCAGP, STACK, RAMOUT;
 wire [3:0] state, aluopsel, seldst, selsrc;
 wire [1:0] pcopsel;
+wire wr_en;
 
 // Instantiate UUT
 SAP UUT (
@@ -34,7 +35,9 @@ SAP UUT (
     .MemOut(MemOut),
     .MAR(MAR),
     .ACCAGP(ACCAGP),
-    .STACK(STACK)
+    .STACK(STACK),
+    .RAMOUT(RAMOUT),
+    .wr_en(wr_en)
 );
 
 // Clock generation

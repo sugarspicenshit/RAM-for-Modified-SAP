@@ -18,13 +18,13 @@ initial internal_bus = Mem[addr];       // initialize what's at the output
 always @addr internal_bus = Mem[addr];  // update what's at the output
 
 always @(posedge clk)
-    if (rst)
+    if (!rst)
         for (i = 0; i < 256; i = i + 1)
             Mem[i] = 8'h00;             // flush all memory locations at reset
         
 
 always @(posedge clk)
-    if (!rst)       
+    if (rst)       
         if (wr_en == 1) 
         begin
             Mem[addr] = data_in;        // load value into memory
@@ -32,7 +32,7 @@ always @(posedge clk)
         end
     
 always @(posedge clk)
-    if (!rst)
+    if (rst)
         if(!wr_en)
         begin
             data_out = internal_bus;

@@ -537,21 +537,21 @@ begin
                                         end
                                 8'h11:  begin               // LW.A 
                                             seldst=4'h1;    // To A
-                                            selsrc=4'h1;    // From A (loop the data around A)
+                                            selsrc=4'h6;    
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h12:  begin               // LW.B 
                                             seldst=4'h2;    // To B
-                                            selsrc=4'h2;    // From B (loop the data around B)
+                                            selsrc=4'h6;    
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h13:  begin               // LW.C 
                                             seldst=4'h3;    // To C
-                                            selsrc=4'h3;    // From C (loop the data around C)
+                                            selsrc=4'h6;    
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;     // Write disabled
@@ -644,7 +644,7 @@ begin
                             state=state+8'h01;
                         end     
                 4'h3:   begin 
-                            if(IR==8'h06 | IR==8'h1d) begin
+                            if(IR==8'h06 | IR==8'h1d | IR==8'h11 | IR==8'h12 | IR==8'h13) begin
                                 pcopsel=3'h0;      
                                 state=state+8'h01;
                             end
@@ -664,8 +664,11 @@ begin
                                 state=state+1;
                             end // PC<-MAR
                             else
-                            begin                        
-                                pcopsel=3'h0;
+                            begin
+                                if (IR==8'h11 | IR==8'h12 | IR==8'h13)                        
+                                    pcopsel=3'h1;
+                                else
+                                    pcopsel=3'h0;
                                 
                                 // Proceed to fetch cycle
                                 state=8'h00;
