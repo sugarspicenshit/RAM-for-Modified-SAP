@@ -644,7 +644,7 @@ begin
                             state=state+8'h01;
                         end     
                 4'h3:   begin 
-                            if(IR==8'h06 | IR==8'h1d | IR==8'h11 | IR==8'h12 | IR==8'h13) begin
+                            if(IR==8'h06 | IR==8'h1d) begin
                                 pcopsel=3'h0;      
                                 state=state+8'h01;
                             end
@@ -663,8 +663,7 @@ begin
                             begin 
                                 state=state+1;
                             end // PC<-MAR
-                            else
-                            begin
+                            else begin
                                 if (IR==8'h11 | IR==8'h12 | IR==8'h13)                        
                                     pcopsel=3'h1;
                                 else
