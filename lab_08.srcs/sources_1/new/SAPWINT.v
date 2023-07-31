@@ -6,9 +6,9 @@ module SAP(
     input wire [3:0] INT,
     input wire rst,
     input wire clk,
-    output wire [7:0] OUTR_1,
-    output wire [7:0] OUTR_2,
-    output wire [7:0] OUTR_3,
+    output wire [7:0] OUTR_1, 
+    output wire [7:0] OUTR_2,  
+    output wire [7:0] OUTR_3,  
     output wire [7:0] PC,           // PC
     output wire [3:0] state,
     output wire [7:0] IR,
@@ -65,7 +65,9 @@ IRDECODER U2 (
 
 datapath U3 (
     .PortIN(INR), 
-    .PortOUT(OUTR), 
+    .PortOUT_1(OUTR_1), 
+    .PortOUT_2(OUTR_2), 
+    .PortOUT_3(OUTR_3), 
     .PCOUT(PC), 
     .ALUREsult(ALUREsult), 
     .seldst(seldst), 

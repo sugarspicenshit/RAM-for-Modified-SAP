@@ -204,14 +204,14 @@ begin
                                             wr_en=1'h0; 
                                         end  
                                 8'h04:  begin               // OUTB 
-                                            seldst=4'h5;    // To OUTR_2
+                                            seldst=4'h6;    // To OUTR_2
                                             selsrc=4'h2;    // From B
                                             aluopsel=4'h0; 
                                             pcopsel=3'h0; 
                                             wr_en=1'h0; 
                                         end
                                 8'h05:  begin               // OUTC 
-                                            seldst=4'h5;    // To OUTR_3
+                                            seldst=4'h7;    // To OUTR_3
                                             selsrc=4'h3;    // From C
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
@@ -438,21 +438,21 @@ begin
                                             wr_en=1'h0;   
                                         end
                                 8'h03:  begin               // OUTA 
-                                            seldst=4'h5; 
+                                            seldst=4'h1; 
                                             selsrc=4'h1; 
                                             aluopsel=4'h0; 
                                             pcopsel=3'h0;
                                             wr_en=1'h0; 
                                         end  
                                 8'h04:  begin               // OUTB 
-                                            seldst=4'h5; 
+                                            seldst=4'h2; 
                                             selsrc=4'h2; 
                                             aluopsel=4'h0; 
                                             pcopsel=3'h0; 
                                             wr_en=1'h0;
                                         end
                                 8'h05:  begin               // OUTC 
-                                            seldst=4'h5; 
+                                            seldst=4'h3; 
                                             selsrc=4'h3; 
                                             aluopsel=4'h0; 
                                             pcopsel=3'h0; 
@@ -664,10 +664,7 @@ begin
                                 state=state+1;
                             end // PC<-MAR
                             else begin
-                                if (IR==8'h11 | IR==8'h12 | IR==8'h13)                        
-                                    pcopsel=3'h1;
-                                else
-                                    pcopsel=3'h0;
+                                pcopsel=3'h0;
                                 
                                 // Proceed to fetch cycle
                                 state=8'h00;
