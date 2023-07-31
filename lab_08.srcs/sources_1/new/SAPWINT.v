@@ -6,7 +6,9 @@ module SAP(
     input wire [3:0] INT,
     input wire rst,
     input wire clk,
-    output wire [7:0] OUTR,
+    output wire [7:0] OUTR_1,
+    output wire [7:0] OUTR_2,
+    output wire [7:0] OUTR_3,
     output wire [7:0] PC,           // PC
     output wire [3:0] state,
     output wire [7:0] IR,

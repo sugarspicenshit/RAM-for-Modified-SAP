@@ -196,22 +196,22 @@ begin
                                             pcopsel=3'h0;
                                             wr_en=1'h0; 
                                         end 
-                                8'h03:  begin               // OUTA 
-                                            seldst=4'h5;    // To OUTR
+                                8'h03:  begin               // OUTA
+                                            seldst=4'h5;    // To OUTR_1
                                             selsrc=4'h1;    // From A
                                             aluopsel=4'h0; 
                                             pcopsel=3'h0; 
                                             wr_en=1'h0; 
                                         end  
                                 8'h04:  begin               // OUTB 
-                                            seldst=4'h5;    // To OUTR
+                                            seldst=4'h5;    // To OUTR_2
                                             selsrc=4'h2;    // From B
                                             aluopsel=4'h0; 
                                             pcopsel=3'h0; 
                                             wr_en=1'h0; 
                                         end
                                 8'h05:  begin               // OUTC 
-                                            seldst=4'h5;    // To OUTR
+                                            seldst=4'h5;    // To OUTR_3
                                             selsrc=4'h3;    // From C
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
@@ -267,28 +267,28 @@ begin
                                             wr_en=1'h0;  
                                         end
                                 8'h0d:  begin               // SW.IN 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h4;    // From PortIN
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h1;     // Write enabled
                                 end
                                 8'h0e:  begin               // SW.A 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h1;    // From A
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h1;     // Write enabled
                                         end
                                 8'h0f:  begin               // SW.B 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h2;    // From B
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h1;     // Write enabled
                                         end
                                 8'h10:  begin               // SW.C 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h3;    // From C
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
@@ -337,7 +337,7 @@ begin
                                             wr_en=1'h0;
                                         end
                                 8'h17:  begin               // BEQ.AB (branch if A equals B)
-                                            seldst=4'h6;    // To MAR (to PC address input)
+                                            seldst=4'h8;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0]) 
                                             aluopsel=4'h7;  
                                             if (zf)
@@ -380,7 +380,7 @@ begin
                                             pcopsel=3'h0;
                                         end
                                 8'h1d:  begin               // JMP (unconditional jump)
-                                            seldst=4'h6;    // To MAR (to PC address input)
+                                            seldst=4'h8;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0])
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;   // Jump to address
@@ -393,7 +393,7 @@ begin
                                             wr_en=1'h0;
                                         end
                                 8'h1f:  begin               // RET.i (return from interrupt vector)
-                                            seldst=4'h6;
+                                            seldst=4'h8;
                                             selsrc=4'h7;
                                             aluopsel=4'h0;
                                             pcopsel=3'h2;
@@ -459,7 +459,7 @@ begin
                                             wr_en=1'h0;
                                         end  
                                 8'h06:  begin               // MAR <- MBR
-                                            seldst=4'h6;    // To MAR
+                                            seldst=4'h8;    // To MAR
                                             selsrc=4'h6;    // From MBR
                                             aluopsel=4'h0;  
                                             pcopsel=3'h0;   
@@ -508,28 +508,28 @@ begin
                                             wr_en=1'h0;
                                         end                           
                                 8'h0d:  begin               // SW.IN 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h4;    // From PortIN
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h0e:  begin               // SW.A 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h1;    // From A
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h0f:  begin               // SW.B 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h2;    // From B
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
                                             wr_en=1'h0;     // Write disabled
                                         end
                                 8'h10:  begin               // SW.C 
-                                            seldst=4'h7;    // To MemOut (RAM data_in)
+                                            seldst=4'h9;    // To MemOut (RAM data_in)
                                             selsrc=4'h3;    // From C
                                             aluopsel=4'h0;
                                             pcopsel=3'h0;
@@ -578,7 +578,7 @@ begin
                                             wr_en=1'h0;
                                         end
                                 8'h17:  begin               // BEQ.AB (branch if A equals B)
-                                            seldst=4'h6;    // To MAR (to PC address input)
+                                            seldst=4'h8;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0]) 
                                             aluopsel=4'h7;  // EQAB
                                             if (zf)
@@ -620,7 +620,7 @@ begin
                                             pcopsel=3'h0;
                                         end
                                 8'h1d:  begin               // JMP (unconditional jump)
-                                            seldst=4'h6;    // To MAR (to PC address input)
+                                            seldst=4'h8;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0])
                                             aluopsel=4'h0;
                                             pcopsel=3'h2;   // Jump to address

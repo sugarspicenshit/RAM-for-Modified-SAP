@@ -3,7 +3,9 @@
 
 module datapath(
     input wire [7:0] PortIN,        // INR
-    output wire [7:0] PortOUT,      // OUTR
+    output wire [7:0] PortOUT_1,
+    output wire [7:0] PortOUT_2,
+    output wire [7:0] PortOUT_3,      
     output wire [7:0] PCOUT,        // PC
     output wire [7:0] ALUREsult,    // Primitive Chipscope
     input wire [3:0] seldst,        // demux control
@@ -52,7 +54,9 @@ demux U1 (
     .B(BEEA), // seldst = 4'h2
     .C(CEEA), // seldst = 4'h3
     .Mem(MemOut), // seldst = 4'h4; to RAM's data in port
-    .outbuf(PortOUT), // seldst = 4'h5
+    .outbuf_1(PortOUT_1), // seldst = 4'h5
+    .outbuf_2(PortOUT_2),
+    .outbuf_3(PortOUT_3),
     .pcjmp(pcjmp), // seldst = 4'h6
     .MAR(MARA), // seldst = 4'h7
     .sel(seldst), 
