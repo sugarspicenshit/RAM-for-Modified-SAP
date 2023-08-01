@@ -39,6 +39,7 @@ reg prima;
 //    statex=1'b0;    
 //end
 
+reg [4:0] tz;
     
 always@(posedge clk)
 begin
@@ -55,6 +56,7 @@ begin
         SELJUMP=1'b0;   // MAR Selected
         IRJUMP=8'd33;   // Jump vector For Interrupt
         wr_en=1'b0;
+        tz=4'h0;
     end 
     
     if(rst) 
@@ -65,6 +67,7 @@ begin
             // decode, execute) finish before servicing the interrupt.
             if((INT==4'b0001 || INT==4'b0010 || INT==4'b0100 || INT==4'b1000) & state!=4'h0) begin 
                 prima=1'b1;
+                tz = INT;
             end
             if(prima==1'b1 & state==4'h0) begin 
                 prima=1'b0;     // reset prima value
@@ -74,7 +77,7 @@ begin
             // Program counter jumps to the interrupt vector then resumes normal
             // operation throughout the interrupt vector until the return instruction.
             if(statex) begin
-                if(INT==4'b0001)begin // PH TIME 
+                if(tz==4'b0001) begin // PH TIME 
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd33;   // Jump vector For Interrupt
@@ -93,10 +96,11 @@ begin
                                     pcopsel=3'h0;   // PC Refresh
                                     state=4'h0;     // Reset State
                                     statex=1'b0;    // Ends ISR Vector
+                                    tz=4'h0;
                                 end                       
                     endcase
                     end
-                if(INT==4'b0010) begin //US Time
+                if(tz==4'b0010) begin //US Time
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd36;   // Jump vector For Interrupt
@@ -115,10 +119,11 @@ begin
                                     pcopsel=3'h0;   // PC Refresh
                                     state=4'h0;     // Reset State
                                     statex=1'b0;    // Ends ISR Vector
+                                    tz=4'h0;
                                 end                       
                     endcase
                     end
-                  if(INT==4'b0100) begin //UK Time
+                  if(tz==4'b0100) begin //UK Time
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd35;   // Jump vector For Interrupt
@@ -137,10 +142,11 @@ begin
                                     pcopsel=3'h0;   // PC Refresh
                                     state=4'h0;     // Reset State
                                     statex=1'b0;    // Ends ISR Vector
+                                    tz=4'h0;
                                 end                       
                     endcase
                     end
-                   if(INT==4'b1000) begin //UAE Time
+                   if(tz==4'b1000) begin //UAE Time
                     case(state)
                         3'h0:   begin
                                     IRJUMP=8'd34;   // Jump vector For Interrupt
@@ -159,6 +165,7 @@ begin
                                     pcopsel=3'h0;   // PC Refresh
                                     state=4'h0;     // Reset State
                                     statex=1'b0;    // Ends ISR Vector
+                                    tz=4'h0;
                                 end                       
                     endcase
                     end
