@@ -29,9 +29,9 @@ always @(ADDR)
 begin
       case(ADDR)
       // Initialize values
-      8'd0:    DATA=16'h1517;   // LW.Bi 00            ; hours = 0
+      8'd0:    DATA=16'h150C;   // LW.Bi 00            ; hours = 0
       8'd1:    DATA=16'h0F00;   // SW.B $00  
-      8'd2:    DATA=16'h153B;   // LW.Bi 00            ; minutes = 0
+      8'd2:    DATA=16'h1500;   // LW.Bi 00            ; minutes = 0
       8'd3:    DATA=16'h0F01;   // SW.B $01
       8'd4:    DATA=16'h1500;   // LW.Bi 00            ; seconds = 0
       8'd5:    DATA=16'h0F02;   // SW.B $02   
@@ -87,7 +87,7 @@ begin
       8'd49:   DATA=16'h1770;   //BEQ.AB function 4
       8'd50:   DATA=16'h1502;   //LW.Bi 2
       8'd51:   DATA=16'h1775;   //BEQ.AB function 5
-      8'd52:   DATA=16'h1500;   //LW.Bi 3
+      8'd52:   DATA=16'h1503;   //LW.Bi 3
       8'd53:   DATA=16'h177A;   //BEQ.AB function 6
       8'd54:   DATA=16'h1100;   //LW.Ai 0
       8'd55:   DATA=16'h0E03;   //SW.A 03

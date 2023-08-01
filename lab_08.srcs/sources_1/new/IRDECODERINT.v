@@ -40,6 +40,7 @@ reg prima;
 //end
 
 reg [4:0] tz;
+reg interrupt_flag;
     
 always@(posedge clk)
 begin
@@ -57,6 +58,7 @@ begin
         IRJUMP=8'd33;   // Jump vector For Interrupt
         wr_en=1'b0;
         tz=4'h0;
+        interrupt_flag=1'h0;
     end 
     
     if(rst) 
@@ -65,9 +67,11 @@ begin
         begin 
             // Prime the interrupt routine, but let the current cycle (fetch,
             // decode, execute) finish before servicing the interrupt.
-            if((INT==4'b0001 || INT==4'b0010 || INT==4'b0100 || INT==4'b1000) & state!=4'h0) begin 
+            // The !interrupt_flag ignores other interrupts while servicing
+            // the ISR.
+            if((INT==4'b0001 || INT==4'b0010 || INT==4'b0100 || INT==4'b1000) & state!=4'h0 & !interrupt_flag) begin 
                 prima=1'b1;
-                tz = INT;
+                tz = INT;  
             end
             if(prima==1'b1 & state==4'h0) begin 
                 prima=1'b0;     // reset prima value
@@ -82,7 +86,7 @@ begin
                         3'h0:   begin
                                     IRJUMP=8'd44;   // Jump vector For Interrupt
                                     if(tz==4'h1)
-                                        IRREF=1'b1;     // Stack Obtain data
+                                        IRREF=1'b1; // Stack Obtain data
                                     SELJUMP=1'b1;   // IRJMP Selected
                                     state=state+1;
                                 end
@@ -97,6 +101,7 @@ begin
                                     pcopsel=3'h0;   // PC Refresh
                                     state=4'h0;     // Reset State
                                     statex=1'b0;    // Ends ISR Vector
+                                    interrupt_flag=1'h1;
                                 end                       
                     endcase
                     end
@@ -105,7 +110,7 @@ begin
                         3'h0:   begin
                                     IRJUMP=8'd61;   // Jump vector For Interrupt
                                     if(tz==4'h2)
-                                        IRREF=1'b1;     // Stack Obtain data
+                                        IRREF=1'b1; // Stack Obtain data
                                     SELJUMP=1'b1;   // IRJMP Selected
                                     state=state+1;
                                 end
@@ -403,6 +408,7 @@ begin
                                             pcopsel=3'h0;
                                             wr_en=1'h0;
                                             tz=4'h0;
+                                            interrupt_flag=1'h0;
                                         end   
                                 8'hff:  begin               // HLT
                                             seldst=4'h0;
@@ -646,6 +652,7 @@ begin
                                             pcopsel=3'h2;
                                             wr_en=1'h0;
                                             tz=4'h0;
+                                            interrupt_flag=1'h0;
                                         end                                       
                             endcase
 

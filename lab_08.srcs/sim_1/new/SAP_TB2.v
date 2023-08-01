@@ -58,7 +58,7 @@ begin
     INT = 4'h0;     // Disable the interrupt flag
     #4 rst = 1'h1;  // After reset
     
-    #(2*1000) INT=4'h1; // Raise the interrupt flag
+    #(2*1000) INT=4'h2; // Raise the interrupt flag
     #4 INT=4'h0; // Lower the interrupt flag
 end
 
