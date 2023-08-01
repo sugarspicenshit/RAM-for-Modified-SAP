@@ -47,6 +47,9 @@ initial begin
         #2 wr_en = 1'h1;
     end
     
+    #2 addr = 8'h23;
+    wr_en = 1'h0;
+    
 end
 
 endmodule

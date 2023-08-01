@@ -32,6 +32,7 @@ begin
                         PCOUT=STACK; 
                         STACK=STACK; 
                     end
+            default: PCOUT=PCOUT;
         endcase
     end
 end

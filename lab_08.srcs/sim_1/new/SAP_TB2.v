@@ -5,13 +5,14 @@ module SAP_TB2;
 
 // Inputs
 reg [7:0] INR;
-reg INT, rst, clk;
+reg [3:0] INT;
+reg rst, clk;
 
 // Outputs
 wire [7:0] OUTR_1, OUTR_2, OUTR_3, PC, IR, ALUREsult, AYE, BEE, CEE, MemOut, MAR, LIT, ACCAGP, STACK, RAMOUT;
 wire [3:0] state, aluopsel, seldst, selsrc;
 wire [1:0] pcopsel;
-wire wr_en;
+wire wr_en, zf;
 
 // Instantiate UUT
 SAP UUT (
@@ -39,7 +40,8 @@ SAP UUT (
     .ACCAGP(ACCAGP),
     .STACK(STACK),
     .RAMOUT(RAMOUT),
-    .wr_en(wr_en)
+    .wr_en(wr_en),
+    .zf(zf)
 );
 
 // Clock generation

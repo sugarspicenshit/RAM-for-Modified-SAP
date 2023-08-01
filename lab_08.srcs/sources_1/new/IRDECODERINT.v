@@ -339,14 +339,8 @@ begin
                                 8'h17:  begin               // BEQ.AB (branch if A equals B)
                                             seldst=4'h8;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0]) 
-                                            aluopsel=4'h7;  
-                                            if (zf)
-                                                // Store current PC value temporarily and prepare
-                                                // for branching
-                                                pcopsel=3'h3;
-                                            else
-                                                // Do nothing
-                                                pcopsel=3'h0;
+                                            aluopsel=4'h7;
+                                            pcopsel=3'h0; 
                                             wr_en=1'h0;         
                                         end
                                 8'h18:  begin               // ADD.Ai (ACC <- ACC + immediate value)
@@ -581,9 +575,11 @@ begin
                                             seldst=4'h8;    // To MAR (to PC address input)
                                             selsrc=4'h8;    // From LIT (ROMDATA[7:0]) 
                                             aluopsel=4'h7;  // EQAB
-                                            if (zf)
-                                                // Branch to indicated instruction
-                                                pcopsel=3'h2;
+                                            if (zf) begin
+                                                // Store current PC value temporarily and prepare
+                                                // for branching
+                                                pcopsel=3'h3;
+                                            end
                                             else
                                                 // Do nothing
                                                 pcopsel=3'h0;
@@ -644,15 +640,21 @@ begin
                             state=state+8'h01;
                         end     
                 4'h3:   begin 
+                            if(IR==8'h17) begin
+                                if (zf)
+                                    // Branch to indicated instruction
+                                    pcopsel=3'h2;
+                                else
+                                    // Do nothing
+                                    pcopsel=3'h1; 
+                            end
+                            
                             if(IR==8'h06 | IR==8'h1d) begin
                                 pcopsel=3'h0;      
                                 state=state+8'h01;
                             end
                             else begin
-                                // Increment PC and move to next state
-                                if (zf) 
-                                    pcopsel=3'h0;
-                                else
+                                if(IR!=8'h17)
                                     pcopsel=3'h1;
                                     
                                 state=state+8'h01;

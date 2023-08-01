@@ -26,7 +26,8 @@ module SAP(
     output wire [7:0] ACCAGP,
     output wire [7:0] STACK,
     output wire [7:0] RAMOUT,
-    output wire wr_en
+    output wire wr_en,
+    output wire zf
 );
 
 wire [7:0] MBRA;  
@@ -35,7 +36,7 @@ wire [7:0] IRJUMP;
 wire IRREF;
 wire SELJUMP;
 //wire wr_en;
-wire zf;
+//wire zf;
 
 assign LIT = ROMDATA[7:0];
 assign RAMOUT = MBRA;

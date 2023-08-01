@@ -28,50 +28,50 @@ module ROMBasic (
 always @(ADDR)
 begin
       case(ADDR)
+      // Initialize values
       8'd0:    DATA=16'h1500;   // LW.Bi 00
       8'd1:    DATA=16'h0F00;   // SW.B $00  
-      8'd2:    DATA=16'h1500;   // LW.Bi 00 
+      8'd2:    DATA=16'h153B;   // LW.Bi 00 
       8'd3:    DATA=16'h0F01;   // SW.B $01
-      8'd4:    DATA=16'h1500;   //LW.Bi 00            ; seconds = 0
-      8'd5:    DATA=16'h0F02;   //SW.B $02   
-      8'd6:    DATA=16'h1500;   //LW.Bi 00            ; timezone = 0 (PH)
+      8'd4:    DATA=16'h1500;   // LW.Bi 00            ; seconds = 0
+      8'd5:    DATA=16'h0F02;   // SW.B $02   
+      8'd6:    DATA=16'h1500;   // LW.Bi 00            ; timezone = 0 (PH)
+      // Loop begin
       8'd7:    DATA=16'h0F03;   // SW.B $03         
       8'd8:    DATA=16'h1102;   // LW.A $02            ; seconds = seconds + 1
       8'd9:    DATA=16'h1801;   // ADD.Ai 01  
-      8'd10:   DATA=16'h0E02;   //SW.A $02
-      8'd11:   DATA=16'h143C;   //LW.Ai 60            ; if (seconds == 60)
-      8'd12:   DATA=16'h1202;   //LW.B $02 
-      8'd13:   DATA=16'h1727;   //BEQ.AB function1
-      8'd14:   DATA=16'h143C;   //LW.Ai 60            ; if (minutes == 60)
-      8'd15:   DATA=16'h1201;   //LW.B $01
-      8'd16:   DATA=16'h1733;   //BEQ.AB function2
-      8'd17:   DATA=16'h1418;   //LW.Ai 24            ; if (hours == 24)
-      8'd18:   DATA=16'h1200;   //LW.B $00
-      8'd19:   DATA=16'h1739;   //BEQ.AB function3
-      8'd20:   DATA=16'h1100;   //LW.A 00
-      8'd21:   DATA=16'h0300;   //OUTA 00;output hours OUTR_1 <- A <- RAM[00]
-      8'd22:   DATA=16'h1201;   //LW.B 01
-      8'd23:   DATA=16'h0400;   //OUTB 00;output minutes OUTR_2 <- B <- RAM[01]
-      8'd24:   DATA=16'h1302;   //LW.C 02
-      8'd25:   DATA=16'h0500;   //OUTC 00 ;output seconds OUTR_3 <- C <- RAM[02]
-      8'd26:   DATA=16'h1D08;   //JMP 08
-                                //Start of Function 1
+      8'd10:   DATA=16'h0E02;   // SW.A $02
+      8'd11:   DATA=16'h143C;   // LW.Ai 60            ; if (seconds == 60)
+      8'd12:   DATA=16'h1202;   // LW.B $02 
+      8'd13:   DATA=16'h171B;   // BEQ.AB function1
+      8'd14:   DATA=16'h143C;   // LW.Ai 60            ; if (minutes == 60)
+      8'd15:   DATA=16'h1201;   // LW.B $01
+      8'd16:   DATA=16'h1721;   // BEQ.AB function2
+      8'd17:   DATA=16'h1418;   // LW.Ai 24             ; if (hours == 24)
+      8'd18:   DATA=16'h1200;   // LW.B $00
+      8'd19:   DATA=16'h1727;   // BEQ.AB function3
+      8'd20:   DATA=16'h1100;   // LW.A 00
+      8'd21:   DATA=16'h0300;   // OUTA 00;output hours OUTR_1 <- A <- RAM[00]
+      8'd22:   DATA=16'h1201;   // LW.B 01
+      8'd23:   DATA=16'h0400;   // OUTB 00;output minutes OUTR_2 <- B <- RAM[01]
+      8'd24:   DATA=16'h1302;   // LW.C 02
+      8'd25:   DATA=16'h0500;   // OUTC 00 ;output seconds OUTR_3 <- C <- RAM[02]
+      8'd26:   DATA=16'h1D08;   // JMP 08
+      // Start of Function 1
       8'd27:   DATA=16'h1101;   //LW.A $01            ; minutes = minutes + 1
       8'd28:   DATA=16'h1801;   //ADD.Ai 01
       8'd29:   DATA=16'h0E01;   //SW.A $01
       8'd30:   DATA=16'h1400;   //LW.Ai 00            ; seconds = 0
       8'd31:   DATA=16'h0E02;   //SW.A $02 
       8'd32:   DATA=16'h1E00;   //RET
-          
-                                  //Start of Function 2
+      // Start of Function 2
       8'd33:   DATA=16'h1100;   //LW.A $00            ; hours = hours + 1
       8'd34:   DATA=16'h1801;   //ADD.Ai 01
       8'd35:   DATA=16'h0E00;   //SW.A $00
       8'd36:   DATA=16'h1400;   //LW.Ai 00            ; minutes = 0
       8'd37:   DATA=16'h0E01;   //SW.A $01
       8'd38:   DATA=16'h1E00;   //RET
-          
-                                  //Start of Function 3
+      // Start of Function 3
       8'd39:   DATA=16'h1400;   //LW.Ai 0             ; hours = 0
       8'd40:   DATA=16'h0E00;   //SW.A $00
       8'd41:   DATA=16'h1E00;   //RET
