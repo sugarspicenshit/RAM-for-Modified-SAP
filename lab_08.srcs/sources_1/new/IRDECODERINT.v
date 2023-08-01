@@ -80,8 +80,9 @@ begin
                 if(tz==4'b0001) begin // PH TIME 
                     case(state)
                         3'h0:   begin
-                                    IRJUMP=8'd33;   // Jump vector For Interrupt
-                                    IRREF=1'b1;     // Stack Obtain data
+                                    IRJUMP=8'd44;   // Jump vector For Interrupt
+                                    if(tz==4'h1)
+                                        IRREF=1'b1;     // Stack Obtain data
                                     SELJUMP=1'b1;   // IRJMP Selected
                                     state=state+1;
                                 end
@@ -96,15 +97,15 @@ begin
                                     pcopsel=3'h0;   // PC Refresh
                                     state=4'h0;     // Reset State
                                     statex=1'b0;    // Ends ISR Vector
-                                    tz=4'h0;
                                 end                       
                     endcase
                     end
                 if(tz==4'b0010) begin //US Time
                     case(state)
                         3'h0:   begin
-                                    IRJUMP=8'd36;   // Jump vector For Interrupt
-                                    IRREF=1'b1;     // Stack Obtain data
+                                    IRJUMP=8'd61;   // Jump vector For Interrupt
+                                    if(tz==4'h2)
+                                        IRREF=1'b1;     // Stack Obtain data
                                     SELJUMP=1'b1;   // IRJMP Selected
                                     state=state+1;
                                 end
@@ -126,8 +127,9 @@ begin
                   if(tz==4'b0100) begin //UK Time
                     case(state)
                         3'h0:   begin
-                                    IRJUMP=8'd35;   // Jump vector For Interrupt
-                                    IRREF=1'b1;     // Stack Obtain data
+                                    IRJUMP=8'd78;   // Jump vector For Interrupt
+                                    if(tz==4'h4)
+                                        IRREF=1'b1;     // Stack Obtain data
                                     SELJUMP=1'b1;   // IRJMP Selected
                                     state=state+1;
                                 end
@@ -149,8 +151,9 @@ begin
                    if(tz==4'b1000) begin //UAE Time
                     case(state)
                         3'h0:   begin
-                                    IRJUMP=8'd34;   // Jump vector For Interrupt
-                                    IRREF=1'b1;     // Stack Obtain data
+                                    IRJUMP=8'd95;   // Jump vector For Interrupt
+                                    if(tz==4'h8)
+                                        IRREF=1'b1;     // Stack Obtain data
                                     SELJUMP=1'b1;   // IRJMP Selected
                                     state=state+1;
                                 end
@@ -397,8 +400,9 @@ begin
                                             seldst=4'h8;
                                             selsrc=4'h7;
                                             aluopsel=4'h0;
-                                            pcopsel=3'h2;
+                                            pcopsel=3'h0;
                                             wr_en=1'h0;
+                                            tz=4'h0;
                                         end   
                                 8'hff:  begin               // HLT
                                             seldst=4'h0;
@@ -636,11 +640,12 @@ begin
                                             wr_en=1'h0;  
                                         end
                                 8'h1f:  begin               // RET.i (return from interrupt vector)
-                                            seldst=4'h1;
-                                            selsrc=4'h1;
+                                            seldst=4'h8;
+                                            selsrc=4'h7;
                                             aluopsel=4'h0;
-                                            pcopsel=3'h0;
+                                            pcopsel=3'h2;
                                             wr_en=1'h0;
+                                            tz=4'h0;
                                         end                                       
                             endcase
 
@@ -661,7 +666,7 @@ begin
                                 state=state+8'h01;
                             end
                             else begin
-                                if(IR!=8'h17)
+                                if(IR!=8'h17 & IR!=8'h1f)
                                     pcopsel=3'h1;
                                     
                                 state=state+8'h01;
