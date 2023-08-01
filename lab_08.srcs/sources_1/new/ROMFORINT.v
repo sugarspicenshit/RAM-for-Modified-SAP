@@ -29,9 +29,9 @@ always @(ADDR)
 begin
       case(ADDR)
       // Initialize values
-      8'd0:    DATA=16'h150D;   // LW.Bi 00
+      8'd0:    DATA=16'h1517;   // LW.Bi 00            ; hours = 0
       8'd1:    DATA=16'h0F00;   // SW.B $00  
-      8'd2:    DATA=16'h153B;   // LW.Bi 00 
+      8'd2:    DATA=16'h153B;   // LW.Bi 00            ; minutes = 0
       8'd3:    DATA=16'h0F01;   // SW.B $01
       8'd4:    DATA=16'h1500;   // LW.Bi 00            ; seconds = 0
       8'd5:    DATA=16'h0F02;   // SW.B $02   
@@ -77,167 +77,160 @@ begin
       8'd41:   DATA=16'h1E00;   //RET
       8'd42:   DATA=16'h0000;   //
       8'd43:   DATA=16'h0000;   //
-
-      //INTERRUPT FUNCTIONS
-      //function changeToPH
-      8'd44:   DATA=16'h1103;   //LW.A 03
-      8'd45:   DATA=16'h1501;   //LW.Bi 1
-      8'd46:   DATA=16'h1758;   //BEQ.AB function 4
-      8'd47:   DATA=16'h1502;   //LW.Bi 2
-      8'd48:   DATA=16'h175D;   //BEQ.AB function 5
-      8'd49:   DATA=16'h1500;   //LW.Bi 3
-      8'd50:   DATA=16'h1762;   //BEQ.AB function 6
-      8'd51:   DATA=16'h1100;   //LW.Ai 0
-      8'd52:   DATA=16'h0E03;   //SW.A 03
-      8'd53:   DATA=16'h1F00;   //RET.i
-      8'd54:   DATA=16'h0000;   //
+      // INTERRUPT VECTORS
+      // ISR changeToPH
+      8'd44:   DATA=16'h0E04;   //SW.A 04
+      8'd45:   DATA=16'h0F05;   //SW.B 05
+      8'd46:   DATA=16'h1006;   //SW.C 06
+      8'd47:   DATA=16'h1103;   //LW.A 03
+      8'd48:   DATA=16'h1501;   //LW.Bi 1
+      8'd49:   DATA=16'h1770;   //BEQ.AB function 4
+      8'd50:   DATA=16'h1502;   //LW.Bi 2
+      8'd51:   DATA=16'h1775;   //BEQ.AB function 5
+      8'd52:   DATA=16'h1500;   //LW.Bi 3
+      8'd53:   DATA=16'h177A;   //BEQ.AB function 6
+      8'd54:   DATA=16'h1100;   //LW.Ai 0
+      8'd55:   DATA=16'h0E03;   //SW.A 03
+      8'd56:   DATA=16'h1104;   //LW.A 04
+      8'd57:   DATA=16'h1205;   //LW.B 05
+      8'd58:   DATA=16'h1306;   //LW.C 06
+      8'd59:   DATA=16'h1F00;   //RET.i
+      8'd60:   DATA=16'h0000;   //
+      // ISR changeToUS
+      8'd61:   DATA=16'h1771;   //SW.A 04
+      8'd62:   DATA=16'h1101;   //SW.B 05
+      8'd63:   DATA=16'h0E03;   //SW.C 06
+      8'd64:   DATA=16'h1103;   //LW.A 03
+      8'd65:   DATA=16'h1500;   //LW.Bi 0
+      8'd66:   DATA=16'h177F;   //BEQ.AB function 7
+      8'd67:   DATA=16'h1502;   //LW.Bi 2
+      8'd68:   DATA=16'h1784;   //BEQ.AB function 8
+      8'd69:   DATA=16'h1503;   //LW.Bi 3
+      8'd70:   DATA=16'h1789;   //BEQ.AB function 9
+      8'd71:   DATA=16'h1101;   //LW.Ai 1
+      8'd72:   DATA=16'h0E03;   //SW.A 03
+      8'd73:   DATA=16'h1104;   //LW.A 04
+      8'd74:   DATA=16'h1205;   //LW.B 05
+      8'd75:   DATA=16'h1306;   //LW.C 06
+      8'd76:   DATA=16'h1F00;   //RET.i
+      8'd77:   DATA=16'h0000;   //
+      // ISR changeToUK
+      8'd78:   DATA=16'h1771;   //SW.A 04
+      8'd79:   DATA=16'h1101;   //SW.B 05
+      8'd80:   DATA=16'h0E03;   //SW.C 06
+      8'd81:   DATA=16'h1103;   //LW.A 03
+      8'd82:   DATA=16'h1500;   //LW.Bi 0
+      8'd83:   DATA=16'h178E;   //BEQ.AB function 10
+      8'd84:   DATA=16'h1501;   //LW.Bi 1
+      8'd85:   DATA=16'h1793;   //BEQ.AB function 11
+      8'd86:   DATA=16'h1503;   //LW.Bi 3
+      8'd87:   DATA=16'h1798;   //BEQ.AB function 12
+      8'd88:   DATA=16'h1102;   //LW.Ai 2
+      8'd89:   DATA=16'h0E03;   //SW.A 03
+      8'd90:   DATA=16'h1104;   //LW.A 04
+      8'd91:   DATA=16'h1205;   //LW.B 05
+      8'd92:   DATA=16'h1306;   //LW.C 06
+      8'd93:   DATA=16'h1F00;   //RET.i
+      8'd94:   DATA=16'h0000;   //
+      // ISR changeToUAE
+      8'd95:   DATA=16'h1771;   //SW.A 04
+      8'd96:   DATA=16'h1101;   //SW.B 05
+      8'd97:   DATA=16'h0E03;   //SW.C 06
+      8'd98:   DATA=16'h1103;   //LW.A 03
+      8'd99:   DATA=16'h1500;   //LW.Bi 0
+      8'd100:   DATA=16'h179D;   //BEQ.AB function 13
+      8'd101:   DATA=16'h1501;   //LW.Bi 1
+      8'd102:   DATA=16'h17A2;   //BEQ.AB function 14
+      8'd103:   DATA=16'h1502;   //LW.Bi 2
+      8'd104:   DATA=16'h17A7;   //BEQ.AB function 15
+      8'd105:   DATA=16'h1103;   //LW.Ai 3
+      8'd106:   DATA=16'h0E03;   //SW.A 03
+      8'd107:   DATA=16'h1104;   //LW.A 04
+      8'd108:   DATA=16'h1205;   //LW.B 05
+      8'd109:   DATA=16'h1306;   //LW.C 06
+      8'd110:   DATA=16'h1F00;   //RET.i
+      8'd111:   DATA=16'h0000;   //
+      // Function4
+      8'd112:   DATA=16'h1100;   //LW.A $00
+      8'd113:   DATA=16'h180C;   //ADD.Ai 0C
+      8'd114:   DATA=16'h0E00;   //SW.A $00
+      8'd115:   DATA=16'h1E00;   //RET
+      8'd116:   DATA=16'h0000;   //
       
-      //function changeToUS
-      8'd55:   DATA=16'h1103;   //LW.A 03
-      8'd56:   DATA=16'h1500;   //LW.Bi 0
-      8'd57:   DATA=16'h1767;   //BEQ.AB function 7
-      8'd58:   DATA=16'h1502;   //LW.Bi 2
-      8'd59:   DATA=16'h176C;   //BEQ.AB function 8
-      8'd60:   DATA=16'h1503;   //LW.Bi 3
-      8'd61:   DATA=16'h1771;   //BEQ.AB function 9
-      8'd62:   DATA=16'h1101;   //LW.Ai 1
-      8'd63:   DATA=16'h0E03;   //SW.A 03
-      8'd64:   DATA=16'h1F00;   //RET.i
-      8'd65:   DATA=16'h0000;   //
+      // Function5
+      8'd117:   DATA=16'h1100;   //LW.A $00
+      8'd118:   DATA=16'h1807;   //ADD.Ai 07
+      8'd119:   DATA=16'h0E00;   //SW.A $00
+      8'd120:   DATA=16'h1E00;   //RET
+      8'd121:   DATA=16'h0000;   //
       
-      //function changeToUK
-      8'd66:   DATA=16'h1103;   //LW.A 03
-      8'd67:   DATA=16'h1500;   //LW.Bi 0
-      8'd68:   DATA=16'h1776;   //BEQ.AB function 10
-      8'd69:   DATA=16'h1501;   //LW.Bi 1
-      8'd70:   DATA=16'h177B;   //BEQ.AB function 11
-      8'd71:   DATA=16'h1503;   //LW.Bi 3
-      8'd72:   DATA=16'h1780;   //BEQ.AB function 12
-      8'd73:   DATA=16'h1102;   //LW.Ai 2
-      8'd74:   DATA=16'h0E03;   //SW.A 03
-      8'd75:   DATA=16'h1F00;   //RET.i
-      8'd76:   DATA=16'h0000;   //
+      // Function6
+      8'd122:   DATA=16'h1100;   //LW.A $00
+      8'd123:   DATA=16'h1804;   //ADD.Ai 04
+      8'd124:  DATA=16'h0E00;   //SW.A $00
+      8'd125:  DATA=16'h1E00;   //RET
+      8'd126:  DATA=16'h0000;   //
       
-      //function changeToUAE
-      8'd77:   DATA=16'h1103;   //LW.A 03
-      8'd78:   DATA=16'h1500;   //LW.Bi 0
-      8'd79:   DATA=16'h1785;   //BEQ.AB function 13
-      8'd80:   DATA=16'h1501;   //LW.Bi 1
-      8'd81:   DATA=16'h178A;   //BEQ.AB function 14
-      8'd82:   DATA=16'h1502;   //LW.Bi 2
-      8'd83:   DATA=16'h178F;   //BEQ.AB function 15
-      8'd84:   DATA=16'h1103;   //LW.Ai 3
-      8'd85:   DATA=16'h0E03;   //SW.A 03
-      8'd86:   DATA=16'h1F00;   //RET.i
-      8'd87:   DATA=16'h0000;   //
+      // Function7
+      8'd127:  DATA=16'h1100;   //LW.A $00
+      8'd128:  DATA=16'h190C;   //SUB.Ai 0C
+      8'd129:  DATA=16'h0E00;   //SW.A $00
+      8'd130:  DATA=16'h1E00;   //RET
+      8'd131:  DATA=16'h0000;   //
       
-      //Function 4
-      8'd88:   DATA=16'h1100;   //LW.A $00
-      8'd89:   DATA=16'h180C;   //ADD.Ai 0C
-      8'd90:   DATA=16'h0E00;   //SW.A $00
-      8'd91:   DATA=16'h1E00;   //RET
-      8'd92:   DATA=16'h0000;   //
+      // Function8
+      8'd132:  DATA=16'h1100;   //LW.A $00
+      8'd133:  DATA=16'h1905;   //SUB.Ai 05
+      8'd134:  DATA=16'h0E00;   //SW.A $00
+      8'd135:  DATA=16'h1E00;   //RET
+      8'd136:  DATA=16'h0000;   //
       
-      //Function 5
-      8'd93:   DATA=16'h1100;   //LW.A $00
-      8'd94:   DATA=16'h1807;   //ADD.Ai 07
-      8'd95:   DATA=16'h0E00;   //SW.A $00
-      8'd96:   DATA=16'h1E00;   //RET
-      8'd97:   DATA=16'h0000;   //
+      // Function9
+      8'd137:  DATA=16'h1100;   //LW.A $00
+      8'd138:  DATA=16'h1908;   //SUB.Ai 08
+      8'd139:  DATA=16'h0E00;   //SW.A $00
+      8'd140:  DATA=16'h1E00;   //RET
+      8'd141:  DATA=16'h0000;   //
       
-      //Function 6
-      8'd98:   DATA=16'h1100;   //LW.A $00
-      8'd99:   DATA=16'h1804;   //ADD.Ai 04
-      8'd100:  DATA=16'h0E00;   //SW.A $00
-      8'd101:  DATA=16'h1E00;   //RET
-      8'd102:  DATA=16'h0000;   //
+      // Function10
+      8'd142:  DATA=16'h1100;   //LW.A $00
+      8'd143:  DATA=16'h1907;   //SUB.Ai 07
+      8'd144:  DATA=16'h0E00;   //SW.A $00
+      8'd145:  DATA=16'h1E00;   //RET
+      8'd146:  DATA=16'h0000;   //
       
-      //Function 7
-      8'd103:  DATA=16'h1100;   //LW.A $00
-      8'd104:  DATA=16'h190C;   //SUB.Ai 0C
-      8'd105:  DATA=16'h0E00;   //SW.A $00
-      8'd106:  DATA=16'h1E00;   //RET
-      8'd107:  DATA=16'h0000;   //
+      // Function11
+      8'd147:  DATA=16'h1100;   //LW.A $00
+      8'd148:  DATA=16'h1805;   //ADD.Ai 05
+      8'd149:  DATA=16'h0E00;   //SW.A $00
+      8'd150:  DATA=16'h1E00;   //RET
+      8'd151:  DATA=16'h0000;   //
       
-      //Function 8
-      8'd108:  DATA=16'h1100;   //LW.A $00
-      8'd109:  DATA=16'h1905;   //SUB.Ai 05
-      8'd110:  DATA=16'h0E00;   //SW.A $00
-      8'd111:  DATA=16'h1E00;   //RET
-      8'd112:  DATA=16'h0000;   //
+      // Function12
+      8'd152:  DATA=16'h1100;   //LW.A $00
+      8'd153:  DATA=16'h1903;   //SUB.Ai 03
+      8'd154:  DATA=16'h0E00;   //SW.A $00
+      8'd155:  DATA=16'h1E00;   //RET
+      8'd156:  DATA=16'h0000;   //
       
-      //Function 9
-      8'd113:  DATA=16'h1100;   //LW.A $00
-      8'd114:  DATA=16'h1908;   //SUB.Ai 08
-      8'd115:  DATA=16'h0E00;   //SW.A $00
-      8'd116:  DATA=16'h1E00;   //RET
-      8'd117:  DATA=16'h0000;   //
-      
-      //Function 10
-      8'd118:  DATA=16'h1100;   //LW.A $00
-      8'd119:  DATA=16'h1907;   //SUB.Ai 07
-      8'd120:  DATA=16'h0E00;   //SW.A $00
-      8'd121:  DATA=16'h1E00;   //RET
-      8'd122:  DATA=16'h0000;   //
-      
-      //Function 11
-      8'd123:  DATA=16'h1100;   //LW.A $00
-      8'd124:  DATA=16'h1805;   //ADD.Ai 05
-      8'd125:  DATA=16'h0E00;   //SW.A $00
-      8'd126:  DATA=16'h1E00;   //RET
-      8'd127:  DATA=16'h0000;   //
-      
-      //Function 12
-      8'd128:  DATA=16'h1100;   //LW.A $00
-      8'd129:  DATA=16'h1903;   //SUB.Ai 03
-      8'd130:  DATA=16'h0E00;   //SW.A $00
-      8'd131:  DATA=16'h1E00;   //RET
-      8'd132:  DATA=16'h0000;   //
-      
-      //Function 13
-      8'd133:  DATA=16'h1100;   //LW.A $00
-      8'd134:  DATA=16'h1904;   //SUB.Ai 04
-      8'd135:  DATA=16'h0E00;   //SW.A $00
-      8'd136:  DATA=16'h1E00;   //RET
-      8'd137:  DATA=16'h0000;   //
-      
-      //Function 14
-      8'd138:  DATA=16'h1100;   //LW.A $00
-      8'd139:  DATA=16'h1808;   //ADD.Ai 08
-      8'd140:  DATA=16'h0E00;   //SW.A $00
-      8'd141:  DATA=16'h1E00;   //RET
-      8'd142:  DATA=16'h0000;   //
-      
-      //Function 15
-      8'd143:  DATA=16'h1100;   //LW.A $00
-      8'd144:  DATA=16'h1803;   //ADD.Ai 03
-      8'd145:  DATA=16'h0E00;   //SW.A $00
-      8'd146:  DATA=16'h1E00;   //RET
-      8'd147:  DATA=16'h0000;   //
-      8'd148:  DATA=16'h0000;
-      8'd149:  DATA=16'h0000;
-      8'd150:  DATA=16'h0000;
-      8'd151:  DATA=16'h0000;
-      8'd152:  DATA=16'h0000;
-      8'd153:  DATA=16'h0000;
-      8'd154:  DATA=16'h0000;
-      8'd155:  DATA=16'h0000;
-      8'd156:  DATA=16'h0000;
-      8'd157:  DATA=16'h0000;
-      8'd158:  DATA=16'h0000;
-      8'd159:  DATA=16'h0000;
-      8'd160:  DATA=16'h0000;
-      8'd161:  DATA=16'h0000;
-      8'd162:  DATA=16'h0000;
-      8'd163:  DATA=16'h0000;
-      8'd164:  DATA=16'h0000;
-      8'd165:  DATA=16'h0000;
-      8'd166:  DATA=16'h0000;
-      8'd167:  DATA=16'h0000;
-      8'd168:  DATA=16'h0000;
-      8'd169:  DATA=16'h0000;
-      8'd170:  DATA=16'h0000;
-      8'd171:  DATA=16'h0000;
+      // Function13
+      8'd157:  DATA=16'h1100;   //LW.A $00
+      8'd158:  DATA=16'h1904;   //SUB.Ai 04
+      8'd159:  DATA=16'h0E00;   //SW.A $00
+      8'd160:  DATA=16'h1E00;   //RET
+      8'd161:  DATA=16'h0000;   //
+      // Function 14
+      8'd162:  DATA=16'h1100;   //LW.A $00
+      8'd163:  DATA=16'h1808;   //ADD.Ai 08
+      8'd164:  DATA=16'h0E00;   //SW.A $00
+      8'd165:  DATA=16'h1E00;   //RET
+      8'd166:  DATA=16'h0000;   //
+      // Function 15
+      8'd167:  DATA=16'h1100;   //LW.A $00
+      8'd168:  DATA=16'h1803;   //ADD.Ai 03
+      8'd169:  DATA=16'h0E00;   //SW.A $00
+      8'd170:  DATA=16'h1E00;   //RET
+      8'd171:  DATA=16'h0000;   //
       8'd172:  DATA=16'h0000;
       8'd173:  DATA=16'h0000;
       8'd174:  DATA=16'h0000;

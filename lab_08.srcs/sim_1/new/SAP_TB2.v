@@ -55,8 +55,11 @@ begin
     rst = 1'h0;     // Reset the computer
     clk = 1'h1;     // High leading edge
     INR = 8'h56;    // Set the input port value 
-    INT = 1'h0;     // Disable the interrupt flag
+    INT = 4'h0;     // Disable the interrupt flag
     #4 rst = 1'h1;  // After reset
+    
+    #(2*1000) INT=4'h1; // Raise the interrupt flag
+    #4 INT=4'h0; // Lower the interrupt flag
 end
 
 endmodule
